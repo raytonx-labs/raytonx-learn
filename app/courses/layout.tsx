@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { headers } from "next/headers";
 
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
@@ -23,11 +24,15 @@ export const metadata: Metadata = {
 };
 
 export default async function CoursesLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createSupabaseServerClient();
+  const headerList = await headers();
+  const authRequired = headerList.get("x-auth-required") === "true";
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  if (authRequired) {
+    const supabase = await createSupabaseServerClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  }
 
   return (
     <main className="flex flex-col gap-12 px-6 py-8">
