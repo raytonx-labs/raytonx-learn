@@ -9,8 +9,10 @@ export default async function proxy(req: NextRequest) {
   // 检查路由是否是公开
   const path = req.nextUrl.pathname;
   const isPublicRoute = publicRoutes.includes(path);
+  const requestHeaders = req.headers;
 
   if (isPublicRoute) {
+    requestHeaders.set("x-auth-required", "false");
     return NextResponse.next();
   }
 
