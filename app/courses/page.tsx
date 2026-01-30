@@ -1,7 +1,27 @@
+import { Metadata } from "next";
+
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+const heroTitle = {
+  en: "Learn real skills from real production projects!",
+  "zh-cn": "从真实生产项目中学习真实技能!",
+};
+
+export const metadata: Metadata = {
+  title: "raytonx-learn | Learn Modern Web Development",
+  description:
+    "Hands-on learning for modern web development. Build real-world projects with Next.js, Nest.js, Supabase, Stripe, TypeScript, and production-ready architecture.",
+  openGraph: {
+    title: "raytonx-learn",
+    description: heroTitle.en,
+    url: "https://raytonx.com/courses",
+    siteName: "raytonx-learn",
+    type: "website",
+  },
+};
 
 export default function Home() {
   return (
@@ -62,8 +82,3 @@ const COURSES = [
   { title: "Build a Canva Clone", chapters: 52 },
   { title: "Build a Finance Platform", chapters: 31 },
 ];
-
-const heroTitle = {
-  en: "Learn real skills from real production projects!",
-  "zh-cn": "从真实生产项目中学习真实技能!",
-};
