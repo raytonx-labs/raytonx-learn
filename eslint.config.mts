@@ -12,7 +12,7 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig([
   {
-    ignores: ["dist/**", "node_modules/**", "*/.next/**", "out/**"],
+    ignores: ["**/node_modules/**", "**/.next/**", "**/dist/**", "**/out/**"],
   },
 
   js.configs.recommended,
