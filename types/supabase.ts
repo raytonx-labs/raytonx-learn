@@ -80,7 +80,7 @@ export type Database = {
           id: string;
           name: string;
           slug: string;
-          status: Database["public"]["Enums"]["status"] | null;
+          status: Database["public"]["Enums"]["status"];
           updated_at: string | null;
         };
         Insert: {
@@ -91,7 +91,7 @@ export type Database = {
           id?: string;
           name: string;
           slug: string;
-          status?: Database["public"]["Enums"]["status"] | null;
+          status?: Database["public"]["Enums"]["status"];
           updated_at?: string | null;
         };
         Update: {
@@ -102,7 +102,7 @@ export type Database = {
           id?: string;
           name?: string;
           slug?: string;
-          status?: Database["public"]["Enums"]["status"] | null;
+          status?: Database["public"]["Enums"]["status"];
           updated_at?: string | null;
         };
         Relationships: [];
