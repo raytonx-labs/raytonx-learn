@@ -1,7 +1,34 @@
+import { SupabaseClient } from "@supabase/supabase-js";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { Database } from "@/types/supabase";
 
 export default async function Home() {
+  const supabase: SupabaseClient<Database> = await createSupabaseServerClient();
+
+  const coursesPromise = supabase
+    .from("courses")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(10);
+
+  const tagsPromise = supabase.from("course_tags").select("*");
+
+  const [{ data: courses, error: coursesError }, { data: tags, error: tagsError }] =
+    await Promise.all([coursesPromise, tagsPromise]);
+
+  if (coursesError || tagsError) {
+    return (
+      <div>
+        Error loading courses:
+        {coursesError ? ` Courses error: ${coursesError.message}` : ""}
+        {tagsError ? ` Tags error: ${tagsError.message}` : ""}
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* Category Tabs */}
@@ -9,43 +36,30 @@ export default async function Home() {
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="nextjs">NextJS</TabsTrigger>
-            <TabsTrigger value="react">NestJS</TabsTrigger>
-            <TabsTrigger value="suapbase">Supabase</TabsTrigger>
-            <TabsTrigger value="mongodb">MongoDB</TabsTrigger>
-            <TabsTrigger value="stripe">Stripe</TabsTrigger>
+            {tags?.map((tag) => (
+              <TabsTrigger key={tag.id} value={tag.slug}>
+                {tag.name}
+              </TabsTrigger>
+            ))}
           </TabsList>
         </Tabs>
       </section>
 
       {/* Course Grid */}
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {COURSES.map((c) => (
-          <Card key={c.title}>
-            <CardHeader>
-              <CardTitle>{c.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              {c.chapters} Chapters
-            </CardContent>
-          </Card>
-        ))}
+        {courses ? (
+          courses.map((c) => (
+            <Card key={c.slug}>
+              <CardHeader>
+                <CardTitle>{c.name}</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">{c.description}</CardContent>
+            </Card>
+          ))
+        ) : (
+          <p>No courses available.</p>
+        )}
       </section>
     </div>
   );
 }
-
-const COURSES = [
-  { title: "Build and Deploy a Cursor Clone", chapters: 13 },
-  { title: "Build and Deploy an AI Automation SaaS", chapters: 31 },
-  { title: "Build and Deploy a B2B SaaS AI Support Platform", chapters: 35 },
-  { title: "Build and Deploy a Lovable Clone", chapters: 21 },
-  { title: "Build and Deploy a SaaS AI Agent Platform", chapters: 30 },
-  { title: "Build a Multi-Tenant E-Commerce with Next.js & Stripe", chapters: 34 },
-  { title: "Build a YouTube Clone", chapters: 39 },
-  { title: "Build a Google Docs Clone", chapters: 33 },
-  { title: "Build a Jira Clone", chapters: 41 },
-  { title: "Build a Slack Clone", chapters: 42 },
-  { title: "Build a Canva Clone", chapters: 52 },
-  { title: "Build a Finance Platform", chapters: 31 },
-];
