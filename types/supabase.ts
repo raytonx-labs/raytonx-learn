@@ -80,6 +80,7 @@ export type Database = {
           id: string;
           name: string;
           slug: string;
+          source_url: string | null;
           status: Database["public"]["Enums"]["status"];
           updated_at: string | null;
         };
@@ -91,6 +92,7 @@ export type Database = {
           id?: string;
           name: string;
           slug: string;
+          source_url?: string | null;
           status?: Database["public"]["Enums"]["status"];
           updated_at?: string | null;
         };
@@ -102,6 +104,7 @@ export type Database = {
           id?: string;
           name?: string;
           slug?: string;
+          source_url?: string | null;
           status?: Database["public"]["Enums"]["status"];
           updated_at?: string | null;
         };
