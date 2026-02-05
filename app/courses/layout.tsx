@@ -38,7 +38,7 @@ export default async function CoursesLayout({ children }: { children: React.Reac
         <h2 className="text-4xl font-extrabold">{heroTitle["zh-cn"]}</h2>
       </section>
 
-      {children}
+      <div className="container mx-auto space-y-8">{children}</div>
 
       {/* Footer */}
       <Footer />

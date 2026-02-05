@@ -42,7 +42,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
   }
 
   return (
-    <div className="container mx-auto space-y-8">
+    <div>
       {/* Category Tabs */}
       <section className="">
         <Tabs defaultValue="all" className="w-full">
@@ -68,14 +68,16 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {courses && courses.length > 0 ? (
           courses.map((c) => (
-            <Card key={c.slug} className="h-[220px] flex flex-col hover:shadow-lg">
-              <CardHeader className="pb-2">
-                <CardTitle className="line-clamp-2 text-base">{c.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground line-clamp-4">
-                {c.description}
-              </CardContent>
-            </Card>
+            <Link href={`/courses/${c.slug}`} className="block h-full" key={c.id}>
+              <Card className="h-[220px] flex flex-col hover:shadow-lg transition">
+                <CardHeader className="pb-2">
+                  <CardTitle className="line-clamp-2 text-base">{c.name}</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground line-clamp-4">
+                  {c.description}
+                </CardContent>
+              </Card>
+            </Link>
           ))
         ) : (
           <p>No courses available.</p>
