@@ -42,7 +42,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
   }
 
   return (
-    <div className="container mx-auto space-y-8">
+    <div>
       {/* Category Tabs */}
       <section className="">
         <Tabs defaultValue="all" className="w-full">
