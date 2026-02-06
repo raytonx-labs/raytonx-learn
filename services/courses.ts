@@ -1,8 +1,6 @@
-import { SupabaseClient } from "@supabase/supabase-js";
+import { TypedSupabaseClient } from "@/types/supabase-client";
 
-import { Database } from "@/types/supabase";
-
-export const getCourseById = async (supabase: SupabaseClient<Database>, courseId: string) => {
+export const getCourseById = async (supabase: TypedSupabaseClient, courseId: string) => {
   const { data, error } = await supabase
     .from("courses")
     .select("*, course_tag_relations!inner(course_tags!inner(slug, name))")
@@ -16,7 +14,7 @@ export const getCourseById = async (supabase: SupabaseClient<Database>, courseId
   return data;
 };
 
-export const getCourseBySlug = async (supabase: SupabaseClient<Database>, courseSlug: string) => {
+export const getCourseBySlug = async (supabase: TypedSupabaseClient, courseSlug: string) => {
   const { data, error } = await supabase
     .from("courses")
     .select("*, course_tag_relations!inner(course_tags!inner(slug, name))")
