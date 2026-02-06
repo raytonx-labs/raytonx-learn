@@ -1,7 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getCourseBySlug } from "@/services/courses";
+import { getCourseBySlug } from "@/services/courses/detail";
 import { Database } from "@/types/supabase";
 
 import { CourseHeader } from "./components/courseHeader";
