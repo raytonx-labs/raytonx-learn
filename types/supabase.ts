@@ -110,6 +110,53 @@ export type Database = {
         };
         Relationships: [];
       };
+      lessons: {
+        Row: {
+          course_id: string;
+          created_at: string;
+          description: string | null;
+          id: string;
+          is_published: boolean;
+          mdx_path: string;
+          name: string;
+          slug: string;
+          sort_order: number;
+          updated_at: string | null;
+        };
+        Insert: {
+          course_id: string;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          is_published?: boolean;
+          mdx_path: string;
+          name: string;
+          slug: string;
+          sort_order: number;
+          updated_at?: string | null;
+        };
+        Update: {
+          course_id?: string;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          is_published?: boolean;
+          mdx_path?: string;
+          name?: string;
+          slug?: string;
+          sort_order?: number;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "lessons_course_id_fkey";
+            columns: ["course_id"];
+            isOneToOne: false;
+            referencedRelation: "courses";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
