@@ -7,6 +7,17 @@ export const publishedLessonsByCourseIdQuery = (
   return supabase.from("lessons").select("*").eq("course_id", courseId).eq("is_published", true);
 };
 
+export const publishedLessonsByCourseSlugQuery = (
+  supabase: TypedSupabaseClient,
+  courseSlug: string,
+) => {
+  return supabase
+    .from("lessons")
+    .select("*")
+    .eq("course_slug", courseSlug)
+    .eq("is_published", true);
+};
+
 export const publishedLessonsQuery = (supabase: TypedSupabaseClient) => {
   return supabase.from("lessons").select("*").eq("is_published", true);
 };
