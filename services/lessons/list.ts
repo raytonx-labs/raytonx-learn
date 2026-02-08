@@ -1,6 +1,6 @@
 import { TypedSupabaseClient } from "@/types/supabase-client";
 
-import { publishedLessonsByCourseIdQuery } from "./queries";
+import { publishedLessonsByCourseSlugQuery } from "./queries";
 
 type ListLessonsParams = {
   page?: number;
@@ -9,15 +9,15 @@ type ListLessonsParams = {
 
 export const listLessonsByCourse = async (
   supabase: TypedSupabaseClient,
-  courseId: string,
+  courseSlug: string,
   params: ListLessonsParams = {},
 ) => {
   const { page = 1, pageSize = 10 } = params;
 
   const from = (page - 1) * pageSize;
-  const to = from + pageSize - 1;
+  const to = from + pageSize;
 
-  const query = publishedLessonsByCourseIdQuery(supabase, courseId)
+  const query = publishedLessonsByCourseSlugQuery(supabase, courseSlug)
     .order("sort_order", { ascending: true })
     .range(from, to);
 
@@ -25,5 +25,10 @@ export const listLessonsByCourse = async (
 
   if (error) throw error;
 
-  return data;
+  const hasMore = (data.length ?? 0) > pageSize;
+
+  return {
+    data: data.slice(0, pageSize) || [],
+    hasMore,
+  };
 };
