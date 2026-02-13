@@ -1,3 +1,4 @@
+import { LESSON_PAGE_SIZE } from "@/config/pagination";
 import { TypedSupabaseClient } from "@/types/supabase-client";
 
 import { publishedLessonsByCourseSlugQuery } from "./queries";
@@ -12,7 +13,7 @@ export const listLessonsByCourse = async (
   courseSlug: string,
   params: ListLessonsParams = {},
 ) => {
-  const { page = 1, pageSize = 10 } = params;
+  const { page = 1, pageSize = LESSON_PAGE_SIZE } = params;
 
   const from = (page - 1) * pageSize;
   const to = from + pageSize;

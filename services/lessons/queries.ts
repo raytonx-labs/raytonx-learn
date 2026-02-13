@@ -13,8 +13,8 @@ export const publishedLessonsByCourseSlugQuery = (
 ) => {
   return supabase
     .from("lessons")
-    .select("*")
-    .eq("course_slug", courseSlug)
+    .select("*,courses!inner (slug)")
+    .eq("courses.slug", courseSlug)
     .eq("is_published", true);
 };
 
@@ -24,4 +24,12 @@ export const publishedLessonsQuery = (supabase: TypedSupabaseClient) => {
 
 export const lessonByIdQuery = (supabase: TypedSupabaseClient, lessonId: string) => {
   return supabase.from("lessons").select("*").eq("id", lessonId);
+};
+
+export const lessonBySlugQuery = (
+  supabase: TypedSupabaseClient,
+  courseId: string,
+  lessonSlug: string,
+) => {
+  return supabase.from("lessons").select("*").eq("slug", lessonSlug).eq("course_id", courseId);
 };
