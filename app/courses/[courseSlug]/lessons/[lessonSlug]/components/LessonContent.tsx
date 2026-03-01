@@ -1,12 +1,13 @@
+import { MDXRemote } from "next-mdx-remote/rsc";
+
+import { loadMdx } from "@/lib/mdx/load-mdx";
 import { Lesson } from "@/types/lesson";
 
-export function LessonContent({ lesson }: { lesson: Lesson }) {
-  // const mdxSource = loadMdx(lesson.mdx_path);
-
-  // return (
-  //   <article className="prose max-w-none px-8">
-  //     <MDXRenderer source={mdxSource} />
-  //   </article>
-  // );
-  return <div className="p-8">Lesson Content for {lesson.name}</div>;
+export async function LessonContent({ lesson }: { lesson: Lesson }) {
+  const { content } = await loadMdx(lesson.mdx_path);
+  return (
+    <article className="prose max-w-none px-8">
+      <MDXRemote source={content} />
+    </article>
+  );
 }
