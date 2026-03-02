@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import { LESSON_PAGE_SIZE } from "@/config/pagination";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCourseBySlug } from "@/services/courses/detail";
@@ -21,6 +23,8 @@ export default async function LessonPage({
     pageSize: LESSON_PAGE_SIZE,
   });
   const lesson = await getLessonBySlug(supabase, course.id, lessonSlug);
+
+  if (!lesson) notFound();
 
   return (
     <>
