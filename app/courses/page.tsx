@@ -6,6 +6,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/supabase";
 
+import { heroTitle } from "./layout";
+
 export default async function Home({ searchParams }: { searchParams: Promise<{ tag?: string }> }) {
   const supabase: SupabaseClient<Database> = await createSupabaseServerClient();
 
@@ -43,6 +45,11 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
 
   return (
     <div>
+      {/* Hero Title */}
+      <section className="text-center">
+        <h2 className="text-4xl font-extrabold">{heroTitle["zh-cn"]}</h2>
+      </section>
+
       {/* Category Tabs */}
       <section className="">
         <Tabs defaultValue="all" className="w-full">

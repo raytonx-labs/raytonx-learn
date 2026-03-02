@@ -4,7 +4,7 @@ import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-const heroTitle = {
+export const heroTitle = {
   en: "Learn real skills from real production projects!",
   "zh-cn": "从真实生产项目中学习真实技能!",
 };
@@ -29,16 +29,13 @@ export default async function CoursesLayout({ children }: { children: React.Reac
   } = await supabase.auth.getUser();
 
   return (
-    <main className="flex flex-col gap-12 px-6 py-8">
+    <main className="flex flex-col h-screen">
       {/* Navbar */}
-      <Navbar initialUser={user} />
+      <div className="px-6 pt-6">
+        <Navbar initialUser={user} />
+      </div>
 
-      {/* Hero Title */}
-      <section className="text-center">
-        <h2 className="text-4xl font-extrabold">{heroTitle["zh-cn"]}</h2>
-      </section>
-
-      <div className="container mx-auto space-y-8">{children}</div>
+      <div className="flex-1 overflow-hidden px-16 py-6">{children}</div>
 
       {/* Footer */}
       <Footer />

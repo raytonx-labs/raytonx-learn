@@ -6,8 +6,10 @@ import { Lesson } from "@/types/lesson";
 export async function LessonContent({ lesson }: { lesson: Lesson }) {
   const { content } = await loadMdx(lesson.mdx_path);
   return (
-    <article className="prose max-w-none px-8">
-      <MDXRemote source={content} />
-    </article>
+    <div className="flex-1 overflow-y-auto px-8 h-full">
+      <article className="prose max-w-none">
+        <MDXRemote source={content} />
+      </article>
+    </div>
   );
 }
