@@ -1,12 +1,30 @@
-import fs from "fs/promises";
 import matter from "gray-matter";
-import path from "path";
 
-export async function loadMdx(mdxPath: string) {
-  const filePath = path.join(process.cwd(), mdxPath);
+import { Lesson } from "@/types/lesson";
 
-  const source = await fs.readFile(filePath, "utf-8");
+export async function loadMdx(lesson: Lesson) {
+  const res = await fetch(
+    `https://api.github.com/repos/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}/contents/${lesson.mdx_path}`,
+    {
+      headers: {
+        Authorization: `token ${process.env.GITHUB_TOKEN}`,
+        Accept: "application/vnd.github.v3.raw", // 返回原始文本
+      },
+      // 使用 tags, Next.js 缓存可精确刷新
+      next: {
+        revalidate: process.env.MDX_REVALIDATE_SECONDS
+          ? Number(process.env.MDX_REVALIDATE_SECONDS)
+          : false,
+        tags: [`lesson-${lesson.slug}`],
+      },
+    },
+  );
 
+  if (!res.ok) {
+    throw new Error(`GitHub fetch failed: ${res.status}`);
+  }
+
+  const source = await res.text();
   const { content, data } = matter(source);
 
   return {
