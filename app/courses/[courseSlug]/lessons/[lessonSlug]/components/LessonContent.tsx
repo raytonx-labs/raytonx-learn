@@ -7,7 +7,7 @@ export async function LessonContent({ lesson }: { lesson: Lesson }) {
   let content: string;
 
   try {
-    const result = await loadMdx(lesson.mdx_path);
+    const result = await loadMdx(lesson);
     content = result.content;
   } catch (error) {
     console.log("LessonContent load error:", error);
