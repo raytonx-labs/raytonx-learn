@@ -14,7 +14,7 @@ export async function loadMdx(lesson: Lesson) {
       next: {
         revalidate: process.env.MDX_REVALIDATE_SECONDS
           ? Number(process.env.MDX_REVALIDATE_SECONDS)
-          : undefined,
+          : false,
         tags: [`lesson-${lesson.slug}`],
       },
     },
