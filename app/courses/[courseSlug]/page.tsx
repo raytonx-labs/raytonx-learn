@@ -30,7 +30,7 @@ export default async function Home({ params }: { params: Promise<{ courseSlug?: 
   }
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
       <CourseHeader
         title={course.name}
         tags={course.course_tag_relations?.map((rel) => rel.course_tags.slug) ?? []}
