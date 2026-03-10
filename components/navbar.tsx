@@ -21,17 +21,40 @@ export const Navbar = ({ initialUser }: { initialUser: User | null }) => {
     router.replace("/");
   };
   return (
-    <header className="flex items-center justify-between">
-      <h1 className="text-2xl font-bold">RaytonX Learn</h1>
+    <header className="sticky top-0 z-50 bg-white border-b">
+      <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <h1 className="text-xl font-bold text-gray-900">RaytonX Learn</h1>
 
-      <div className="flex gap-4">
-        {user ? (
-          <UserAvatar user={user} onSignOut={onSignOut} />
-        ) : (
-          <Link href="/login">
-            <Button variant="link">登录</Button>
-          </Link>
-        )}
+        {/* Center - Search */}
+        <div className="flex-1 max-w-md px-6">
+          <input
+            type="text"
+            placeholder="Search courses..."
+            className="
+            w-full
+            rounded-lg
+            border
+            border-gray-200
+            bg-gray-50
+            px-4 py-2
+            text-sm
+            outline-none
+            focus:border-blue-600
+            focus:ring-1
+            focus:bg-white
+          "
+          />
+        </div>
+
+        <div className="flex items-center  gap-4">
+          {user ? (
+            <UserAvatar user={user} onSignOut={onSignOut} />
+          ) : (
+            <Link href="/login">
+              <Button variant="link">登录</Button>
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );

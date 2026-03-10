@@ -29,13 +29,11 @@ export default async function CoursesLayout({ children }: { children: React.Reac
   } = await supabase.auth.getUser();
 
   return (
-    <main className="flex flex-col h-screen">
+    <main className="flex flex-col min-h-screen">
       {/* Navbar */}
-      <div className="px-6 pt-6">
-        <Navbar initialUser={user} />
-      </div>
+      <Navbar initialUser={user} />
 
-      <div className="flex-1 overflow-hidden px-16 py-6">{children}</div>
+      <div className="flex-1">{children}</div>
 
       {/* Footer */}
       <Footer />

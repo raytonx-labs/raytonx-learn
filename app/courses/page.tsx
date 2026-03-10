@@ -6,8 +6,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/supabase";
 
-import { heroTitle } from "./layout";
-
 export default async function Home({ searchParams }: { searchParams: Promise<{ tag?: string }> }) {
   const supabase: SupabaseClient<Database> = await createSupabaseServerClient();
 
@@ -46,12 +44,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
   return (
     <div>
       {/* Hero Title */}
-      <section className="text-center">
+      {/* <section className="text-center">
         <h2 className="text-4xl font-extrabold">{heroTitle["zh-cn"]}</h2>
-      </section>
+      </section> */}
 
       {/* Category Tabs */}
-      <section className="">
+      <section className="max-w-6xl mx-auto px-4 py-4">
         <Tabs defaultValue="all" className="w-full">
           <TabsList
             className="flex w-full gap-2
@@ -72,7 +70,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
       </section>
 
       {/* Course Grid */}
-      <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="max-w-6xl mx-auto px-4 py-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {courses && courses.length > 0 ? (
           courses.map((c) => (
             <Link href={`/courses/${c.slug}`} className="block h-full" key={c.id}>
