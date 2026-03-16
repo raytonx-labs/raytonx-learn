@@ -7,11 +7,9 @@ export const getLessonBySlug = async (
   courseSlug: string,
   lessonSlug: string,
 ) => {
-  const start = Date.now();
   const { data, error } = await lessonBySlugQuery(supabase, courseSlug, lessonSlug).single();
 
   if (error) throw error;
-  console.log(`getLessonBySlug fetch took ${Date.now() - start}ms`);
   return data;
 };
 
