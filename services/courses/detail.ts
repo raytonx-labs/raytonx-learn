@@ -13,11 +13,12 @@ export const getCourseById = async (supabase: TypedSupabaseClient, courseId: str
 };
 
 export const getCourseBySlug = async (supabase: TypedSupabaseClient, courseSlug: string) => {
+  const start = Date.now();
   const { data, error } = await publishedCoursesQuery(supabase).eq("slug", courseSlug).single();
 
   if (error) {
     throw new Error(`Error fetching course with ID ${courseSlug}: ${error.message}`);
   }
-
+  console.log(`getCourseBySlug fetch took ${Date.now() - start}ms`);
   return data;
 };

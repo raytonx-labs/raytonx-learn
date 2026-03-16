@@ -13,6 +13,7 @@ export const listLessonsByCourse = async (
   courseSlug: string,
   params: ListLessonsParams = {},
 ) => {
+  const start = Date.now();
   const { page = 1, pageSize = LESSON_PAGE_SIZE } = params;
 
   const from = (page - 1) * pageSize;
@@ -27,7 +28,9 @@ export const listLessonsByCourse = async (
   if (error) throw error;
 
   const hasMore = (data.length ?? 0) > pageSize;
-
+  console.log(
+    `listLessonsByCourse fetch took ${Date.now() - start}ms, page: ${page}, pageSize: ${pageSize}`,
+  );
   return {
     data: data.slice(0, pageSize) || [],
     hasMore,
