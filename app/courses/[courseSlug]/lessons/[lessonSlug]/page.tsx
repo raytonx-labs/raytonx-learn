@@ -15,8 +15,17 @@ export default async function LessonPage({
 }: {
   params: Promise<{ courseSlug: string; lessonSlug: string }>;
 }) {
+  console.time("total");
+
+  console.time("params");
   const { courseSlug, lessonSlug } = await params;
+  console.timeEnd("params");
+
+  console.time("createSupabase");
   const supabase: TypedSupabaseClient = await createSupabaseServerClient();
+  console.timeEnd("createSupabase");
+
+  console.time("queries");
 
   const coursePromise = getCourseBySlug(supabase, courseSlug);
   const lessonsPromise = listLessonsByCourse(supabase, courseSlug, {
@@ -30,15 +39,23 @@ export default async function LessonPage({
     lessonPromise,
   ]);
 
+  console.timeEnd("queries");
+
+  console.time("render");
+
   const lessons = lessonsResult.data;
 
   if (!lesson) notFound();
 
-  return (
+  const result = (
     <>
       <LessonSidebar course={course} initialLessons={lessons} currentLessonSlug={lessonSlug} />
-
       <LessonContent lesson={lesson} />
     </>
   );
+
+  console.timeEnd("render");
+  console.timeEnd("total");
+
+  return result;
 }
