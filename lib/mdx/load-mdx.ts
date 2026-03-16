@@ -18,7 +18,6 @@ export async function loadMdx(lesson: Lesson) {
           : false,
         tags: [`lesson-${lesson.slug}`],
       },
-      cache: "force-cache",
     },
   );
 
