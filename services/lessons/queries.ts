@@ -28,8 +28,12 @@ export const lessonByIdQuery = (supabase: TypedSupabaseClient, lessonId: string)
 
 export const lessonBySlugQuery = (
   supabase: TypedSupabaseClient,
-  courseId: string,
+  courseSlug: string,
   lessonSlug: string,
 ) => {
-  return supabase.from("lessons").select("*").eq("slug", lessonSlug).eq("course_id", courseId);
+  return supabase
+    .from("lessons")
+    .select("*,courses!inner(slug)")
+    .eq("slug", lessonSlug)
+    .eq("courses.slug", courseSlug);
 };

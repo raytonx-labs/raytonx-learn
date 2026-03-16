@@ -18,11 +18,19 @@ export default async function LessonPage({
   const { courseSlug, lessonSlug } = await params;
   const supabase: TypedSupabaseClient = await createSupabaseServerClient();
 
-  const course = await getCourseBySlug(supabase, courseSlug);
-  const { data: lessons } = await listLessonsByCourse(supabase, courseSlug, {
+  const coursePromise = getCourseBySlug(supabase, courseSlug);
+  const lessonsPromise = listLessonsByCourse(supabase, courseSlug, {
     pageSize: LESSON_PAGE_SIZE,
   });
-  const lesson = await getLessonBySlug(supabase, course.id, lessonSlug);
+  const lessonPromise = getLessonBySlug(supabase, courseSlug, lessonSlug);
+
+  const [course, lessonsResult, lesson] = await Promise.all([
+    coursePromise,
+    lessonsPromise,
+    lessonPromise,
+  ]);
+
+  const lessons = lessonsResult.data;
 
   if (!lesson) notFound();
 
