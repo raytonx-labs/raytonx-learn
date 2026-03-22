@@ -15,7 +15,9 @@ export default async function proxy(req: NextRequest) {
   }
 
   // 先做“乐观检查”（是否有 token）
-  const hasAuthCookie = req.cookies.get("sb-access-token") || req.cookies.get("sb-refresh-token");
+  const hasAuthCookie = req.cookies
+    .getAll()
+    .some((cookie) => cookie.name.startsWith("sb-") && cookie.name.endsWith("-auth-token"));
 
   if (!hasAuthCookie) {
     return NextResponse.redirect(new URL("/login", req.url));
