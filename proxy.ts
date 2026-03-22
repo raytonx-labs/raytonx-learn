@@ -9,11 +9,16 @@ export default async function proxy(req: NextRequest) {
   // 检查路由是否是公开
   const path = req.nextUrl.pathname;
   const isPublicRoute = publicRoutes.includes(path);
-  const requestHeaders = req.headers;
 
   if (isPublicRoute) {
-    requestHeaders.set("x-auth-required", "false");
     return NextResponse.next();
+  }
+
+  // 先做“乐观检查”（是否有 token）
+  const hasAuthCookie = req.cookies.get("sb-access-token") || req.cookies.get("sb-refresh-token");
+
+  if (!hasAuthCookie) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   // 检查用户状态
