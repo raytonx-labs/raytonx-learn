@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/supabase/auth";
 
 export const heroTitle = {
   en: "Learn real skills from real production projects!",
@@ -23,10 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CoursesLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user } = await getCurrentUser();
 
   return (
     <main className="flex flex-col min-h-screen">
