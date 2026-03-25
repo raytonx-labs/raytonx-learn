@@ -17,7 +17,7 @@ export async function login(formData: FormData) {
   if (error) redirect("/login?message=Could not authenticate user");
 
   revalidatePath("/", "layout");
-  redirect("/courses"); // 登录成功跳转到课程页
+  redirect("/"); // 登录成功跳转到课程页
 }
 
 export async function signup(formData: FormData) {

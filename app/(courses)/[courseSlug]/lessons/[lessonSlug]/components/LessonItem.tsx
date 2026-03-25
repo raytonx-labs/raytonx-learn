@@ -14,7 +14,7 @@ export function LessonItem({
 }) {
   return (
     <Link
-      href={`/courses/${courseSlug}/lessons/${lesson.slug}`}
+      href={`/${courseSlug}/lessons/${lesson.slug}`}
       className={cn(
         "block px-4 py-2 text-sm rounded-md transition-colors",
         active ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-muted/60",

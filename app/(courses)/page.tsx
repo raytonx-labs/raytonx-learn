@@ -60,7 +60,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
                 value="all"
                 className="flex-1 min-w-[120px] px-4 py-1 rounded-md bg-gray-100 hover:bg-gray-200"
               >
-                <Link href={`/courses`} className="inline-block">
+                <Link href={`/`} className="inline-block">
                   All
                 </Link>
               </TabsTrigger>
@@ -71,7 +71,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
                   value={tag.slug}
                   className="flex-1 min-w-[120px] px-4 py-1 rounded-md bg-gray-100 hover:bg-gray-200"
                 >
-                  <Link href={`/courses?tag=${tag.slug}`} className="inline-block">
+                  <Link href={`/?tag=${tag.slug}`} className="inline-block">
                     {tag.name}
                   </Link>
                 </TabsTrigger>
@@ -88,7 +88,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
       >
         {courses && courses.length > 0 ? (
           courses.map((c) => (
-            <Link href={`/courses/${c.slug}`} className="block h-full" key={c.id}>
+            <Link href={`/${c.slug}`} className="block h-full" key={c.id}>
               <Card className="flex flex-col h-full hover:shadow-lg hover:scale-[1.02] transition-transform duration-200 overflow-hidden">
                 {/* 封面图 */}
                 <div className="h-32 w-full bg-gray-200 flex items-center justify-center">

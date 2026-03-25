@@ -19,7 +19,7 @@ export function StartLearningButton({
 
   return (
     <Button asChild size="lg" className="w-full">
-      <Link href={`/courses/${courseSlug}/lessons/${firstLessonSlug}`}>开始学习</Link>
+      <Link href={`/${courseSlug}/lessons/${firstLessonSlug}`}>开始学习</Link>
     </Button>
   );
 }
