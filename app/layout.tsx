@@ -67,13 +67,13 @@ export const metadata: Metadata = {
       "实战导向的 Next.js、Supabase、TypeScript 全栈课程，帮助你快速提升远程开发能力，构建高质量生产级项目。",
     images: [
       {
-        url: "https://raytonx.com/courses/og-image.jpg",
+        url: "https://raytonx.com/courses/og-image.png",
         width: 1200,
         height: 630,
         alt: "RaytonX Learn - 高质量编程技术课程",
       },
       {
-        url: "https://raytonx.com/courses/og-image-square.jpg",
+        url: "https://raytonx.com/courses/og-image-square.png",
         width: 1200,
         height: 1200,
         alt: "RaytonX Learn 课程封面",
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     title: "RaytonX Learn - 远程开发技术分享",
     description:
       "实战导向的 Next.js、Supabase、TypeScript 全栈课程，帮助你快速提升远程开发能力，构建高质量生产级项目。",
-    images: ["https://raytonx.com/courses/og-image.jpg"],
+    images: ["https://raytonx.com/courses/og-image.png"],
   },
 };
 
