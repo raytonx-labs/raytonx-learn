@@ -22,9 +22,6 @@ export async function generateMetadata({
   return {
     title: course?.name,
     description: course?.description?.slice(0, 160),
-    openGraph: {
-      images: [{ url: course?.cover_url || "https://raytonx.com/courses/default-og.png" }],
-    },
     alternates: { canonical: `https://raytonx.com/courses/${courseSlug}` },
   };
 }
