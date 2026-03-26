@@ -20,7 +20,7 @@ export default async function proxy(req: NextRequest) {
     .some((cookie) => cookie.name.startsWith("sb-") && cookie.name.endsWith("-auth-token"));
 
   if (!hasAuthCookie) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL(`${req.nextUrl.basePath}/login`, req.url));
   }
 
   // 检查用户状态
@@ -30,7 +30,7 @@ export default async function proxy(req: NextRequest) {
 
   // 未授权用户重定向
   if (!user) {
-    return NextResponse.redirect(new URL("/login", req.nextUrl));
+    return NextResponse.redirect(new URL(`${req.nextUrl.basePath}/login`, req.nextUrl));
   }
   return NextResponse.next();
 }

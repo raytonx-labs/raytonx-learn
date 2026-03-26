@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { cache } from "react";
 import "server-only";
 
@@ -9,7 +8,8 @@ export const getCurrentUser = cache(async () => {
     data: { user },
   } = await (await createSupabaseServerClient()).auth.getUser();
   if (!user?.id) {
-    redirect("/login");
+    return { isAuth: false, user: null };
+  } else {
+    return { isAuth: true, user };
   }
-  return { isAuth: true, user };
 });
