@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://raytonx.com/courses"),
+  metadataBase: new URL("https://raytonx.com"),
 
   title: {
     default: "RaytonX Learn - 远程开发技术分享",

@@ -23,6 +23,16 @@ export async function generateMetadata({
     title: course?.name,
     description: course?.description?.slice(0, 160),
     alternates: { canonical: `https://raytonx.com/courses/${courseSlug}` },
+    openGraph: {
+      images: [
+        {
+          url: `/courses/${courseSlug}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: course?.name,
+        },
+      ],
+    },
   };
 }
 
