@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { listCourses } from "@/services/courses/list";
 import type { Database } from "@/types/supabase";
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ tag?: string }> }) {
@@ -12,20 +13,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
 
   const tag = (await searchParams).tag ?? "all";
 
-  const coursesQuery = supabase
-    .from("courses")
-    .select(
-      `*,course_tag_relations!inner(
-        course_tags!inner(slug, name)
-      )`,
-    )
-    .eq("status", "published")
-    .order("created_at", { ascending: false })
-    .limit(12);
-
-  if (tag !== "all") {
-    coursesQuery.eq("course_tag_relations.course_tags.slug", tag);
-  }
+  const coursesQuery = listCourses(supabase, { tag });
 
   const tagsQuery = supabase.from("course_tags").select("*");
 

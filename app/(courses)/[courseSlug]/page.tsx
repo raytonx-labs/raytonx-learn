@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCourseBySlug } from "@/services/courses/detail";
+import { listCourses } from "@/services/courses/list";
 import { getFirstLessonByCourse } from "@/services/lessons/detail";
 import { TypedSupabaseClient } from "@/types/supabase-client";
 
@@ -34,6 +36,33 @@ export async function generateMetadata({
       ],
     },
   };
+}
+
+type Params = {
+  courseSlug: string;
+};
+
+export async function generateStaticParams(): Promise<Params[]> {
+  try {
+    const supabase: TypedSupabaseClient = await createSupabaseAdminClient();
+    const courses = await listCourses(supabase, { pageSize: 1000 });
+
+    if (courses.error) throw new Error("Failed to fetch courses");
+
+    const paramsList: Params[] = [];
+
+    for (const course of courses.data) {
+      paramsList.push({
+        courseSlug: course.slug,
+      });
+    }
+
+    console.log(`生成 ${paramsList.length} 个静态课程路径`);
+    return paramsList;
+  } catch (error) {
+    console.error("generateStaticParams 错误:", error);
+    return [];
+  }
 }
 
 export default async function Home({ params }: { params: Promise<{ courseSlug?: string }> }) {
