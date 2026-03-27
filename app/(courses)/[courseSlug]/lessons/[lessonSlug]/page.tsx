@@ -11,6 +11,9 @@ import { TypedSupabaseClient } from "@/types/supabase-client";
 import { LessonContent } from "./components/LessonContent";
 import { LessonSidebar } from "./components/LessonSidebar";
 
+export const runtime = "nodejs";
+export const dynamic = "force-static";
+
 type Params = {
   courseSlug: string;
   lessonSlug: string;
