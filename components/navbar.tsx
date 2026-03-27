@@ -3,23 +3,43 @@
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 import { Button } from "./ui/button";
 import { UserAvatar } from "./user-avatar";
 
-export const Navbar = ({ initialUser }: { initialUser: User | null }) => {
-  const [user, setUser] = useState<User | null>(initialUser);
-  const supabase = createSupabaseBrowserClient();
+export const Navbar = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const supabase = useMemo(() => createSupabaseBrowserClient(), []);
   const router = useRouter();
+
+  useEffect(() => {
+    const init = async () => {
+      const { data } = await supabase.auth.getSession();
+      setUser(data.session?.user ?? null);
+      setLoading(false);
+    };
+
+    init();
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, [supabase]);
 
   const onSignOut = async () => {
     await supabase.auth.signOut();
-    setUser(null);
     router.replace("/");
   };
+
   return (
     <header className="sticky top-0 z-50 bg-white border-b">
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -51,7 +71,7 @@ export const Navbar = ({ initialUser }: { initialUser: User | null }) => {
         </div>
 
         <div className="flex items-center  gap-4">
-          {user ? (
+          {loading ? null : user ? (
             <UserAvatar user={user} onSignOut={onSignOut} />
           ) : (
             <Link href="/login">
