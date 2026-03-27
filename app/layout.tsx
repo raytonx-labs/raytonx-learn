@@ -3,6 +3,10 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { Footer } from "@/components/footer";
+import { Navbar } from "@/components/navbar";
+import { getCurrentUser } from "@/lib/supabase/auth";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -90,14 +94,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { user } = await getCurrentUser();
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <main className="flex flex-col min-h-screen">
+          {/* Navbar */}
+          <Navbar initialUser={user} />
+
+          <div className="flex-1">{children}</div>
+
+          {/* Footer */}
+          <Footer />
+        </main>
+      </body>
       <Analytics />
       <SpeedInsights />
     </html>
