@@ -11,6 +11,7 @@ import { LessonContent } from "./components/LessonContent";
 import { LessonSidebar } from "./components/LessonSidebar";
 
 export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 export default async function LessonPage({
   params,
