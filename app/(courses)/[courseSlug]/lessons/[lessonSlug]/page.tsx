@@ -10,6 +10,8 @@ import { TypedSupabaseClient } from "@/types/supabase-client";
 import { LessonContent } from "./components/LessonContent";
 import { LessonSidebar } from "./components/LessonSidebar";
 
+export const dynamic = "force-dynamic";
+
 export default async function LessonPage({
   params,
 }: {
