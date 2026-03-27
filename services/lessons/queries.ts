@@ -19,7 +19,7 @@ export const publishedLessonsByCourseSlugQuery = (
 };
 
 export const publishedLessonsQuery = (supabase: TypedSupabaseClient) => {
-  return supabase.from("lessons").select("*").eq("is_published", true);
+  return supabase.from("lessons").select("*,courses!inner (slug)").eq("is_published", true);
 };
 
 export const lessonByIdQuery = (supabase: TypedSupabaseClient, lessonId: string) => {

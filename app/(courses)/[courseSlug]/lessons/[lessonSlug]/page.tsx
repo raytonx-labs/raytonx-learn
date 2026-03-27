@@ -4,7 +4,7 @@ import { LESSON_PAGE_SIZE } from "@/config/pagination";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCourseBySlug } from "@/services/courses/detail";
 import { getLessonBySlug } from "@/services/lessons/detail";
-import { listLessonsByCourse } from "@/services/lessons/list";
+import { listLessonsByCourse, listPublishedLessons } from "@/services/lessons/list";
 import { TypedSupabaseClient } from "@/types/supabase-client";
 
 import { LessonContent } from "./components/LessonContent";
@@ -12,6 +12,35 @@ import { LessonSidebar } from "./components/LessonSidebar";
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
+
+type Params = {
+  courseSlug: string;
+  lessonSlug: string;
+};
+
+export async function generateStaticParams(): Promise<Params[]> {
+  try {
+    const supabase: TypedSupabaseClient = await createSupabaseServerClient();
+    const lessons = await listPublishedLessons(supabase, { pageSize: 1000 });
+
+    if (!lessons.error) throw new Error("Failed to fetch courses");
+
+    const paramsList: Params[] = [];
+
+    for (const lesson of lessons.data) {
+      paramsList.push({
+        courseSlug: lesson.courses.slug,
+        lessonSlug: lesson.slug,
+      });
+    }
+
+    console.log(`生成 ${paramsList.length} 个静态课时路径`);
+    return paramsList;
+  } catch (error) {
+    console.error("generateStaticParams 错误:", error);
+    return [];
+  }
+}
 
 export default async function LessonPage({
   params,
