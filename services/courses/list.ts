@@ -26,7 +26,6 @@ export const listCourses = async (
 
   query.order("updated_at", { ascending: true });
   query.range(from, to);
-  console.log("query", JSON.stringify(query));
 
   const { data, error } = await query;
 
