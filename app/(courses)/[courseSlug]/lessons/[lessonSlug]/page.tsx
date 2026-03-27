@@ -24,7 +24,7 @@ export async function generateStaticParams(): Promise<Params[]> {
     const supabase: TypedSupabaseClient = await createSupabaseAdminClient();
     const lessons = await listPublishedLessons(supabase, { pageSize: 1000 });
 
-    if (!lessons.error) throw new Error("Failed to fetch courses");
+    if (lessons.error) throw new Error("Failed to fetch lessons");
 
     const paramsList: Params[] = [];
 
