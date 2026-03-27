@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { LESSON_PAGE_SIZE } from "@/config/pagination";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCourseBySlug } from "@/services/courses/detail";
 import { getLessonBySlug } from "@/services/lessons/detail";
@@ -20,7 +21,7 @@ type Params = {
 
 export async function generateStaticParams(): Promise<Params[]> {
   try {
-    const supabase: TypedSupabaseClient = await createSupabaseServerClient();
+    const supabase: TypedSupabaseClient = await createSupabaseAdminClient();
     const lessons = await listPublishedLessons(supabase, { pageSize: 1000 });
 
     if (!lessons.error) throw new Error("Failed to fetch courses");
