@@ -10,6 +10,8 @@ import { CourseOverview } from "./components/courseOverview";
 import { CourseResources } from "./components/courseResources";
 import { StartLearningButton } from "./components/courseStartLearn";
 
+export const dynamicParams = true;
+
 export async function generateMetadata({
   params,
 }: {

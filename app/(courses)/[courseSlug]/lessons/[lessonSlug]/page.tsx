@@ -9,6 +9,8 @@ import { listLessonsByCourse, listPublishedLessons } from "@/services/lessons/li
 import { LessonContent } from "./components/LessonContent";
 import { LessonSidebar } from "./components/LessonSidebar";
 
+export const dynamicParams = true;
+
 type Params = {
   courseSlug: string;
   lessonSlug: string;
