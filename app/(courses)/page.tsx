@@ -1,21 +1,17 @@
-import { SupabaseClient } from "@supabase/supabase-js";
 import Image from "next/image";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { supabaseStaticClient } from "@/lib/supabase/static";
 import { listCourses } from "@/services/courses/list";
-import type { Database } from "@/types/supabase";
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ tag?: string }> }) {
-  const supabase: SupabaseClient<Database> = await createSupabaseServerClient();
-
   const tag = (await searchParams).tag ?? "all";
 
-  const coursesQuery = listCourses(supabase, { tag });
+  const coursesQuery = listCourses(supabaseStaticClient, { tag });
 
-  const tagsQuery = supabase.from("course_tags").select("*");
+  const tagsQuery = supabaseStaticClient.from("course_tags").select("*");
 
   const [{ data: courses, error: coursesError }, { data: tags, error: tagsError }] =
     await Promise.all([coursesQuery, tagsQuery]);

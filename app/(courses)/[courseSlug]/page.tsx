@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 
-import { createSupabaseAdminClient } from "@/lib/supabase/admin";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { supabaseStaticClient } from "@/lib/supabase/static";
 import { getCourseBySlug } from "@/services/courses/detail";
 import { listCourses } from "@/services/courses/list";
 import { getFirstLessonByCourse } from "@/services/lessons/detail";
-import { TypedSupabaseClient } from "@/types/supabase-client";
 
 import { CourseHeader } from "./components/courseHeader";
 import { CourseOverview } from "./components/courseOverview";
@@ -17,9 +15,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ courseSlug: string }>;
 }): Promise<Metadata> {
-  const supabase = await createSupabaseServerClient();
   const { courseSlug } = await params;
-  const course = await getCourseBySlug(supabase, courseSlug);
+  const course = await getCourseBySlug(supabaseStaticClient, courseSlug);
 
   return {
     title: course?.name,
@@ -44,8 +41,7 @@ type Params = {
 
 export async function generateStaticParams(): Promise<Params[]> {
   try {
-    const supabase: TypedSupabaseClient = await createSupabaseAdminClient();
-    const courses = await listCourses(supabase, { pageSize: 1000 });
+    const courses = await listCourses(supabaseStaticClient, { pageSize: 1000 });
 
     if (courses.error) throw new Error("Failed to fetch courses");
 
@@ -72,15 +68,13 @@ export default async function Home({ params }: { params: Promise<{ courseSlug?: 
     throw new Error("Course slug is required");
   }
 
-  const supabase: TypedSupabaseClient = await createSupabaseServerClient();
-
-  const course = await getCourseBySlug(supabase, courseSlug!);
+  const course = await getCourseBySlug(supabaseStaticClient, courseSlug!);
 
   if (!course) {
     throw new Error("Course not found");
   }
 
-  const firstLesson = await getFirstLessonByCourse(supabase, courseSlug);
+  const firstLesson = await getFirstLessonByCourse(supabaseStaticClient, courseSlug);
 
   if (!firstLesson) {
     throw new Error("No published lessons found for this course");

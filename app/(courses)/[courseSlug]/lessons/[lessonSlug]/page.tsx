@@ -1,12 +1,10 @@
 import { notFound } from "next/navigation";
 
 import { LESSON_PAGE_SIZE } from "@/config/pagination";
-import { createSupabaseAdminClient } from "@/lib/supabase/admin";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { supabaseStaticClient } from "@/lib/supabase/static";
 import { getCourseBySlug } from "@/services/courses/detail";
 import { getLessonBySlug } from "@/services/lessons/detail";
 import { listLessonsByCourse, listPublishedLessons } from "@/services/lessons/list";
-import { TypedSupabaseClient } from "@/types/supabase-client";
 
 import { LessonContent } from "./components/LessonContent";
 import { LessonSidebar } from "./components/LessonSidebar";
@@ -18,8 +16,7 @@ type Params = {
 
 export async function generateStaticParams(): Promise<Params[]> {
   try {
-    const supabase: TypedSupabaseClient = await createSupabaseAdminClient();
-    const lessons = await listPublishedLessons(supabase, { pageSize: 1000 });
+    const lessons = await listPublishedLessons(supabaseStaticClient, { pageSize: 1000 });
 
     if (lessons.error) throw new Error("Failed to fetch lessons");
 
@@ -46,13 +43,12 @@ export default async function LessonPage({
   params: Promise<{ courseSlug: string; lessonSlug: string }>;
 }) {
   const { courseSlug, lessonSlug } = await params;
-  const supabase: TypedSupabaseClient = await createSupabaseServerClient();
 
-  const coursePromise = getCourseBySlug(supabase, courseSlug);
-  const lessonsPromise = listLessonsByCourse(supabase, courseSlug, {
+  const coursePromise = getCourseBySlug(supabaseStaticClient, courseSlug);
+  const lessonsPromise = listLessonsByCourse(supabaseStaticClient, courseSlug, {
     pageSize: LESSON_PAGE_SIZE,
   });
-  const lessonPromise = getLessonBySlug(supabase, courseSlug, lessonSlug);
+  const lessonPromise = getLessonBySlug(supabaseStaticClient, courseSlug, lessonSlug);
 
   const [course, lessonsResult, lesson] = await Promise.all([
     coursePromise,

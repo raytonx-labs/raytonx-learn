@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { CSSProperties } from "react";
 
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { supabaseStaticClient } from "@/lib/supabase/static";
 import { getCourseBySlug } from "@/services/courses/detail";
 
 export const alt = "RaytonX Learn - 课程封面";
@@ -11,9 +11,8 @@ export const runtime = "edge";
 export const revalidate = 3600;
 
 export default async function Image({ params }: { params: Promise<{ courseSlug: string }> }) {
-  const supabase = await createSupabaseServerClient();
   const { courseSlug } = await params;
-  const course = await getCourseBySlug(supabase, courseSlug);
+  const course = await getCourseBySlug(supabaseStaticClient, courseSlug);
 
   // 统一的背景样式
   const containerStyle: CSSProperties = {
