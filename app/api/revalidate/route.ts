@@ -7,9 +7,9 @@ export async function POST(request: Request) {
     return Response.json({ message: "Invalid secret" }, { status: 401 });
   }
 
-  revalidatePath(`/course/${courseSlug}`, "layout");
+  revalidatePath(`/courses/${courseSlug}`, "layout");
   // 重新更新课时内容，实现SSG更新
-  revalidatePath(`/course/${courseSlug}/lesson/${lessonSlug}`);
+  revalidatePath(`/courses/${courseSlug}/lessons/${lessonSlug}`);
 
   return Response.json({ message: "Static site updated" });
 }
