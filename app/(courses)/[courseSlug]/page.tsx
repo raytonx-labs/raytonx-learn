@@ -12,9 +12,6 @@ import { CourseOverview } from "./components/courseOverview";
 import { CourseResources } from "./components/courseResources";
 import { StartLearningButton } from "./components/courseStartLearn";
 
-export const runtime = "nodejs";
-export const dynamic = "force-static";
-
 export async function generateMetadata({
   params,
 }: {
