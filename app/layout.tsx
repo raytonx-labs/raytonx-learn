@@ -90,6 +90,10 @@ export const metadata: Metadata = {
       "实战导向的 Next.js、Supabase、TypeScript 全栈课程，帮助你快速提升远程开发能力，构建高质量生产级项目。",
     images: [`${BASE_PATH}/og-image.png`],
   },
+
+  alternates: {
+    canonical: `${BASE_PATH}`,
+  },
 };
 
 export default function RootLayout({
