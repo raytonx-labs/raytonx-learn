@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { LESSON_PAGE_SIZE } from "@/config/pagination";
@@ -10,6 +11,31 @@ import { LessonContent } from "./components/LessonContent";
 import { LessonSidebar } from "./components/LessonSidebar";
 
 export const dynamicParams = true;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ courseSlug: string; lessonSlug: string }>;
+}): Promise<Metadata> {
+  const { courseSlug, lessonSlug } = await params;
+  const lesson = await getLessonBySlug(supabaseStaticClient, courseSlug, lessonSlug);
+
+  return {
+    title: lesson?.name,
+    description: lesson?.description?.slice(0, 160),
+    alternates: { canonical: `/${courseSlug}/lessons/${lessonSlug}` },
+    openGraph: {
+      images: [
+        {
+          url: `/${courseSlug}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: lesson?.name,
+        },
+      ],
+    },
+  };
+}
 
 type Params = {
   courseSlug: string;

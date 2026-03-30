@@ -15,10 +15,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const BASE_PATH = "/courses";
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://raytonx.com"),
+  metadataBase: new URL(
+    `${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}`,
+  ),
 
   title: {
     default: "RaytonX Learn - 远程开发技术分享",
@@ -69,13 +69,13 @@ export const metadata: Metadata = {
       "实战导向的 Next.js、Supabase、TypeScript 全栈课程，帮助你快速提升远程开发能力，构建高质量生产级项目。",
     images: [
       {
-        url: `${BASE_PATH}/og-image.png`,
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "RaytonX Learn - 高质量编程技术课程",
       },
       {
-        url: `${BASE_PATH}/og-image-square.png`,
+        url: "/og-image-square.png",
         width: 1200,
         height: 1200,
         alt: "RaytonX Learn 课程封面",
@@ -88,11 +88,11 @@ export const metadata: Metadata = {
     title: "RaytonX Learn - 远程开发技术分享",
     description:
       "实战导向的 Next.js、Supabase、TypeScript 全栈课程，帮助你快速提升远程开发能力，构建高质量生产级项目。",
-    images: [`${BASE_PATH}/og-image.png`],
+    images: ["/og-image.png"],
   },
 
   alternates: {
-    canonical: `${BASE_PATH}`,
+    canonical: `${process.env.NEXT_PUBLIC_BASE_PATH!}`,
   },
 };
 
