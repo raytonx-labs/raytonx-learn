@@ -3,12 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "./lib/supabase/server";
 
 // 指定公开路由和保护的路由
-const publicRoutes = ["/login", "/courses", "/"];
+const publicRoutes = ["/login", "/"];
+const PUBLIC_PREFIXES = ["/courses"];
 
 export default async function proxy(req: NextRequest) {
   // 检查路由是否是公开
   const path = req.nextUrl.pathname;
-  const isPublicRoute = publicRoutes.includes(path);
+  const isPublicRoute =
+    publicRoutes.includes(path) || PUBLIC_PREFIXES.some((prefix) => path.startsWith(prefix));
 
   if (isPublicRoute) {
     return NextResponse.next();
