@@ -3,15 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "./lib/supabase/server";
 
 // 指定公开路由和保护的路由
-const publicRoutes = ["/login", "/"];
 const PROTECTED_PREFIXES = ["/dashboard", "/profile"];
 
 export default async function proxy(req: NextRequest) {
-  // 检查路由是否是公开
+  // 检查是否是受保护的路由
   const path = req.nextUrl.pathname;
-  const isPublicRoute =
-    publicRoutes.includes(path) || !PROTECTED_PREFIXES.some((prefix) => path.startsWith(prefix));
-  if (isPublicRoute) {
+  const isProtectedRoute = PROTECTED_PREFIXES.some((prefix) => path.startsWith(prefix));
+  if (!isProtectedRoute) {
     return NextResponse.next();
   }
 
@@ -39,6 +37,6 @@ export default async function proxy(req: NextRequest) {
 // Routes Proxy should not run on
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|opengraph-image|sitemap.xml|robots.txt|.*\\.png$).*)",
+    "/((?!api|_next/static|_next/image|favicon\\.ico|opengraph-image|sitemap\\.xml|robots\\.txt|.*\\.(?:png|jpg|jpeg|svg|webp|gif|ico)$).*)",
   ],
 };
