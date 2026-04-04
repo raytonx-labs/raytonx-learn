@@ -21,30 +21,39 @@ export function LessonListLoader({
   );
 
   if (error) {
-    return <div>加载失败</div>;
+    return <div className="px-4 py-2 text-sm text-muted-foreground">加载失败</div>;
   }
 
   return (
-    <div className="space-y-2">
-      {lessons.map((lesson) => (
-        <LessonItem
-          key={lesson.id}
-          lesson={lesson}
-          active={lesson.slug === currentLessonSlug}
-          courseSlug={courseSlug}
-        />
-      ))}
+    <div>
+      <nav className="space-y-0.5">
+        {lessons.map((lesson, index) => (
+          <LessonItem
+            key={lesson.id}
+            lesson={lesson}
+            active={lesson.slug === currentLessonSlug}
+            courseSlug={courseSlug}
+            index={index}
+          />
+        ))}
+      </nav>
 
-      <div className="flex justify-center mt-4">
+      <div className="px-4 py-3">
         {isLoading ? (
-          <div>加载中...</div> // 首屏加载中
+          <span className="text-xs text-muted-foreground">加载中...</span>
         ) : hasMore ? (
-          <Button onClick={loadMore} disabled={isLoadingMore} variant="ghost">
+          <Button
+            onClick={loadMore}
+            disabled={isLoadingMore}
+            variant="ghost"
+            size="sm"
+            className="w-full text-xs h-8"
+          >
             {isLoadingMore ? "加载中..." : "加载更多"}
           </Button>
-        ) : (
-          <div>没有更多了</div>
-        )}
+        ) : lessons.length > 5 ? (
+          <span className="text-xs text-muted-foreground">所有课程加载完成</span>
+        ) : null}
       </div>
     </div>
   );
