@@ -41,41 +41,50 @@ export const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b">
-      <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-gray-900">
-          <Link href="/" className="block">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <span className="text-base font-semibold text-foreground tracking-tight">
             RaytonX Learn
+          </span>
+        </Link>
+
+        {/* Navigation Links */}
+        <nav className="hidden md:flex items-center gap-8">
+          <Link
+            href="/"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Courses
           </Link>
-        </h1>
+          <Link
+            href="https://www.raytonx.com/en/blog"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Blog
+          </Link>
+          <Link
+            href="https://github.com/raytonx-labs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            GitHub
+          </Link>
+        </nav>
 
-        {/* Center - Search */}
-        <div className="flex-1 max-w-md px-6">
-          <input
-            type="text"
-            placeholder="Search courses..."
-            className="
-            w-full
-            rounded-lg
-            border
-            border-gray-200
-            bg-gray-50
-            px-4 py-2
-            text-sm
-            outline-none
-            focus:border-blue-600
-            focus:ring-1
-            focus:bg-white
-          "
-          />
-        </div>
-
-        <div className="flex items-center  gap-4">
+        {/* Auth */}
+        <div className="flex items-center gap-4">
           {loading ? null : user ? (
             <UserAvatar user={user} onSignOut={onSignOut} />
           ) : (
             <Link href="/login">
-              <Button variant="link">登录</Button>
+              <Button variant="ghost" size="sm" className="text-sm font-normal">
+                Sign In
+              </Button>
             </Link>
           )}
         </div>
