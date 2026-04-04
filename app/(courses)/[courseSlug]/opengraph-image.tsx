@@ -14,6 +14,8 @@ export default async function Image({ params }: { params: Promise<{ courseSlug: 
   const { courseSlug } = await params;
   const course = await getCourseBySlug(supabaseStaticClient, courseSlug);
 
+  const publicSite = process.env.NEXT_PUBLIC_SITE_URL;
+
   // 统一的背景样式
   const containerStyle: CSSProperties = {
     width: "100%",
@@ -110,7 +112,7 @@ export default async function Image({ params }: { params: Promise<{ courseSlug: 
           立即学习 →
         </div>
         <div style={{ display: "flex", fontSize: "22px", color: "#64748b" }}>
-          https://raytonx.com/courses/{courseSlug}
+          `${publicSite}/courses/{courseSlug}`
         </div>
       </div>
     </div>,

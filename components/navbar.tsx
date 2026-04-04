@@ -14,6 +14,8 @@ export const Navbar = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const publicSite = process.env.NEXT_PUBLIC_SITE_URL;
+
   const supabase = useMemo(() => createSupabaseBrowserClient(), []);
   const router = useRouter();
 
@@ -53,13 +55,13 @@ export const Navbar = () => {
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center gap-8">
           <Link
-            href="/"
+            href={`${publicSite}/zh`}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Courses
+            RaytonX
           </Link>
           <Link
-            href="https://www.raytonx.com/en/blog"
+            href={`${publicSite}/zh/blog`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"

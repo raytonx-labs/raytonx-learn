@@ -21,11 +21,11 @@ export async function generateMetadata({
   return {
     title: course?.name,
     description: course?.description?.slice(0, 160),
-    alternates: { canonical: `/courses/${courseSlug}` },
+    alternates: { canonical: `/${courseSlug}` },
     openGraph: {
       images: [
         {
-          url: `/courses/${courseSlug}/opengraph-image`,
+          url: `/${courseSlug}/opengraph-image`,
           width: 1200,
           height: 630,
           alt: course?.name,
