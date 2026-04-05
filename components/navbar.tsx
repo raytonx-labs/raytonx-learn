@@ -1,44 +1,13 @@
 "use client";
 
-import { User } from "@supabase/supabase-js";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
 
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-
+import { useAuth } from "./auth-provider";
 import { Button } from "./ui/button";
 import { UserAvatar } from "./user-avatar";
 
 export const Navbar = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const supabase = useMemo(() => createSupabaseBrowserClient(), []);
-  const router = useRouter();
-
-  useEffect(() => {
-    const init = async () => {
-      const { data } = await supabase.auth.getSession();
-      setUser(data.session?.user ?? null);
-      setLoading(false);
-    };
-
-    init();
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, [supabase]);
-
-  const onSignOut = async () => {
-    await supabase.auth.signOut();
-    router.replace("/");
-  };
+  const { user, loading, openLoginModal, signOut } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -79,13 +48,16 @@ export const Navbar = () => {
         {/* Auth */}
         <div className="flex items-center gap-4">
           {loading ? null : user ? (
-            <UserAvatar user={user} onSignOut={onSignOut} />
+            <UserAvatar user={user} onSignOut={signOut} />
           ) : (
-            <Link href="/login">
-              <Button variant="ghost" size="sm" className="text-sm font-normal">
-                Sign In
-              </Button>
-            </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-sm font-normal"
+              onClick={openLoginModal}
+            >
+              Sign In
+            </Button>
           )}
         </div>
       </div>
