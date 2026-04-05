@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { createSupabaseRouteHandlerClient } from "@/lib/supabase/route-handler";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
   let next = searchParams.get("next") ?? "";
@@ -20,13 +20,14 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${siteUrl}${BASE_PATH}?message=code is required`);
   }
 
-  const successResponse = NextResponse.redirect(`${origin}/courses`);
+  const successUrl = `${siteUrl}${BASE_PATH}${next}`;
+  const failureUrl = `${siteUrl}${BASE_PATH}?message=Auth failed`;
+  const successResponse = NextResponse.redirect(successUrl);
   const supabase = createSupabaseRouteHandlerClient(request, successResponse);
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error || !data.session) {
-    return NextResponse.redirect(`${siteUrl}${BASE_PATH}?message=Auth failed`);
-  } else {
-    return successResponse;
+    successResponse.headers.set("location", failureUrl);
   }
+  return successResponse;
 }
