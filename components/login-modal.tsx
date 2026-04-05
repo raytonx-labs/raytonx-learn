@@ -26,6 +26,8 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  const callbackUrl = `${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}/auth/callback`;
+
   const supabase = createSupabaseBrowserClient();
 
   const handleEmailLogin = async (e: React.FormEvent) => {
@@ -46,7 +48,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: callbackUrl,
         },
       });
       if (error) {
@@ -66,7 +68,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: callbackUrl,
       },
     });
 
