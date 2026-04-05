@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseRouteHandlerClient } from "@/lib/supabase/route-handler";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  let next = searchParams.get("next") ?? "/";
+  let next = searchParams.get("next") ?? "";
   if (!next.startsWith("/")) {
-    next = "/";
+    next = "";
   }
 
   const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -16,16 +16,17 @@ export async function GET(request: Request) {
   const forwardedProto = request.headers.get("x-forwarded-proto") || "https";
   const siteUrl = forwardedHost ? `${forwardedProto}://${forwardedHost}` : origin;
 
-  if (code) {
-    const supabase = await createSupabaseServerClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      return NextResponse.redirect(`${siteUrl}${BASE_PATH}${next}`);
-    } else {
-      console.error("Auth callback error:", error.message);
-    }
+  if (!code) {
+    return NextResponse.redirect(`${siteUrl}${BASE_PATH}?message=code is required`);
   }
 
-  // 授权失败或没有 code 时，重定向回登录页并附带错误信息
-  return NextResponse.redirect(`${siteUrl}${BASE_PATH}?message=Auth failed`);
+  const successResponse = NextResponse.redirect(`${origin}/courses`);
+  const supabase = createSupabaseRouteHandlerClient(request, successResponse);
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+  if (error || !data.session) {
+    return NextResponse.redirect(`${siteUrl}${BASE_PATH}?message=Auth failed`);
+  } else {
+    return successResponse;
+  }
 }
