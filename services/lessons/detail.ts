@@ -1,6 +1,6 @@
 import { TypedSupabaseClient } from "@/types/supabase-client";
 
-import { lessonBySlugQuery, publishedLessonsByCourseSlugQuery } from "./queries";
+import { lessonBySlugQuery, publicLessonsByCourseSlugQuery } from "./queries";
 
 export const getLessonBySlug = async (
   supabase: TypedSupabaseClient,
@@ -14,7 +14,7 @@ export const getLessonBySlug = async (
 };
 
 export const getFirstLessonByCourse = async (supabase: TypedSupabaseClient, courseSlug: string) => {
-  const { data, error } = await publishedLessonsByCourseSlugQuery(supabase, courseSlug)
+  const { data, error } = await publicLessonsByCourseSlugQuery(supabase, courseSlug)
     .order("sort_order")
     .limit(1)
     .maybeSingle();

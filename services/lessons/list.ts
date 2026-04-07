@@ -1,7 +1,7 @@
 import { LESSON_PAGE_SIZE } from "@/config/pagination";
 import { TypedSupabaseClient } from "@/types/supabase-client";
 
-import { publishedLessonsByCourseSlugQuery, publishedLessonsQuery } from "./queries";
+import { publicLessonsByCourseSlugQuery, publishedLessonsQuery } from "./queries";
 
 type ListLessonsParams = {
   page?: number;
@@ -18,7 +18,7 @@ export const listLessonsByCourse = async (
   const from = (page - 1) * pageSize;
   const to = from + pageSize;
 
-  const query = publishedLessonsByCourseSlugQuery(supabase, courseSlug)
+  const query = publicLessonsByCourseSlugQuery(supabase, courseSlug)
     .order("sort_order", { ascending: true })
     .range(from, to);
 
