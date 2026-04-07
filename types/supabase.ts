@@ -116,11 +116,11 @@ export type Database = {
           created_at: string;
           description: string | null;
           id: string;
-          is_published: boolean;
           mdx_path: string;
           name: string;
           slug: string;
           sort_order: number;
+          status: Database["public"]["Enums"]["status"];
           updated_at: string | null;
         };
         Insert: {
@@ -128,11 +128,11 @@ export type Database = {
           created_at?: string;
           description?: string | null;
           id?: string;
-          is_published?: boolean;
           mdx_path: string;
           name: string;
           slug: string;
           sort_order: number;
+          status?: Database["public"]["Enums"]["status"];
           updated_at?: string | null;
         };
         Update: {
@@ -140,11 +140,11 @@ export type Database = {
           created_at?: string;
           description?: string | null;
           id?: string;
-          is_published?: boolean;
           mdx_path?: string;
           name?: string;
           slug?: string;
           sort_order?: number;
+          status?: Database["public"]["Enums"]["status"];
           updated_at?: string | null;
         };
         Relationships: [
@@ -165,7 +165,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      status: "draft" | "published" | "archived";
+      status: "draft" | "published" | "archived" | "coming_soon";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -291,7 +291,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      status: ["draft", "published", "archived"],
+      status: ["draft", "published", "archived", "coming_soon"],
     },
   },
 } as const;

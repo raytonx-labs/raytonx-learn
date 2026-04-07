@@ -165,18 +165,39 @@ export default async function CoursePage({ params }: { params: Promise<{ courseS
             </h2>
             {lessons && lessons.length > 0 ? (
               <nav className="space-y-1">
-                {lessons.map((lesson, index) => (
-                  <Link
-                    key={lesson.id}
-                    href={`/${courseSlug}/lessons/${lesson.slug}`}
-                    className="flex items-start gap-3 px-3 py-2 text-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors group"
-                  >
-                    <span className="text-xs text-muted-foreground/60 font-mono mt-0.5">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="flex-1 line-clamp-2">{lesson.name}</span>
-                  </Link>
-                ))}
+                {lessons.map((lesson, index) => {
+                  const isComingSoon = lesson.status === "coming_soon";
+
+                  const content = (
+                    <div
+                      className={`flex items-start gap-3 px-3 py-2 text-sm rounded-md transition-colors ${
+                        isComingSoon
+                          ? "text-muted-foreground"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted group"
+                      }`}
+                    >
+                      <span className="text-xs text-muted-foreground/60 font-mono mt-0.5">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="flex-1 line-clamp-2">{lesson.name}</span>
+                      {isComingSoon ? (
+                        <span className="text-xs text-muted-foreground whitespace-nowrap">
+                          敬请期待
+                        </span>
+                      ) : null}
+                    </div>
+                  );
+
+                  if (isComingSoon) {
+                    return <div key={lesson.id}>{content}</div>;
+                  }
+
+                  return (
+                    <Link key={lesson.id} href={`/${courseSlug}/lessons/${lesson.slug}`}>
+                      {content}
+                    </Link>
+                  );
+                })}
               </nav>
             ) : (
               <p className="text-sm text-muted-foreground">暂无课时内容</p>

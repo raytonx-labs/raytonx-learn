@@ -66,12 +66,22 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
       {/* Course List */}
       <div className="space-y-4">
         {courses && courses.length > 0 ? (
-          courses.map((course) => (
-            <Link key={course.id} href={`/${course.slug}`} className="block group">
-              <article className="p-5 border border-border rounded-lg hover:border-muted-foreground/30 transition-colors">
+          courses.map((course) => {
+            const isComingSoon = course.status === "coming_soon";
+
+            const content = (
+              <article
+                className={`p-5 border border-border rounded-lg transition-colors ${
+                  isComingSoon ? "opacity-80" : "hover:border-muted-foreground/30"
+                }`}
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-base font-medium text-foreground group-hover:text-foreground/80 transition-colors mb-1.5">
+                    <h2
+                      className={`text-base font-medium text-foreground mb-1.5 transition-colors ${
+                        isComingSoon ? "" : "group-hover:text-foreground/80"
+                      }`}
+                    >
                       {course.name}
                     </h2>
                     <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
@@ -90,23 +100,39 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
                       </div>
                     )}
                   </div>
-                  <svg
-                    className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors flex-shrink-0 mt-0.5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                  {isComingSoon ? (
+                    <span className="text-sm text-muted-foreground flex-shrink-0 mt-0.5">
+                      敬请期待
+                    </span>
+                  ) : (
+                    <svg
+                      className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors flex-shrink-0 mt-0.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  )}
                 </div>
               </article>
-            </Link>
-          ))
+            );
+
+            if (isComingSoon) {
+              return <div key={course.id}>{content}</div>;
+            }
+
+            return (
+              <Link key={course.id} href={`/${course.slug}`} className="block group">
+                {content}
+              </Link>
+            );
+          })
         ) : (
           <div className="text-center py-20">
             <p className="text-muted-foreground">No courses available.</p>
