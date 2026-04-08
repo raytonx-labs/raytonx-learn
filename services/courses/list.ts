@@ -21,7 +21,7 @@ export const listCourses = async (
   const query = publishedCoursesQuery(supabase);
 
   if (tag && tag !== "all") {
-    query.eq("course_tag_relations.course_tags.slug", tag);
+    query.eq("filter_rel.course_tags.slug", tag);
   }
 
   query.order("updated_at", { ascending: true });
