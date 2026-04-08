@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RaytonX Learn
 
-## Getting Started
+RaytonX Learn 是一个基于 Next.js 构建的课程站点，挂载在 `/courses` 路径下，后端服务使用 Supabase。
 
-First, run the development server:
+线上地址：https://www.raytonx.com/courses
+
+## Tech Stack
+
+- Next.js 16
+- Tailwind CSS / Shadcn UI
+- Supabase
+- Vercel
+
+## Local Development
+
+安装依赖后启动开发服务器：
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+默认开发地址：
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000/courses
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+项目在 `next.config.ts` 中配置了：
 
-## Learn More
+- `basePath: "/courses"`
+- `assetPrefix: "/courses"`
+- 根路径 `/` 永久重定向到 `/courses`
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+本项目依赖以下环境变量：
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+NEXT_PUBLIC_SITE_URL=
+NEXT_PUBLIC_BASE_PATH=/courses
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
 
-## Deploy on Vercel
+说明：
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `NEXT_PUBLIC_SITE_URL` 用于 canonical、Open Graph、sitemap 等绝对地址生成。
+- `NEXT_PUBLIC_BASE_PATH` 通常为 `/courses`。
+- `SUPABASE_SERVICE_ROLE_KEY` 仅服务端使用，不应暴露到客户端。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 内容管理
+
+### 结构化数据
+
+课程和课时存放在 supabase 中，当前区分为不同状态：
+
+- `published`：正式发布，可用于 SEO、sitemap、静态页面生成。
+- `coming_soon`：可在列表中展示“敬请期待”，但不应生成静态课时页面，也不应出现在 sitemap 中。
+
+代码中已按语义区分：
+
+- `published` 查询只返回已发布内容。
+- `public` 查询用于站内展示，可包含 `coming_soon`。
+
+### 课程内容
+
+课程内容没有放数据库，而是放在独立仓库，用 MDX 管理。
+
+- 每个 lesson 是一个 mdx 文件
+- 通过 GitHub API 拉取内容
+- 使用 Next.js cache（revalidate + tags）控制更新
+
+这样可以避免每次改内容都触发完整构建，同时保留 Git 版本记录。
+
+## 其他
+
+### Analytics
+
+由于项目挂在在主域名下的`/courses` 路径， 因此 Vercel Analytics / Speed Insights 的 endpoint 指向主域名 `https://www.raytonx.com` 下的 `/courses` 路径，以避免跨域问题。
+
+如果后续调整域名或部署路径，请同步检查：
+
+- `app/layout.tsx`
+- `next.config.ts`
+- `NEXT_PUBLIC_SITE_URL`
+- `NEXT_PUBLIC_BASE_PATH`
