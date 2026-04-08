@@ -7,7 +7,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
   const tag = (await searchParams).tag ?? "all";
 
   const coursesQuery = listCourses(supabaseStaticClient, { tag });
-  const tagsQuery = supabaseStaticClient.from("course_tags").select("*");
+  const tagsQuery = supabaseStaticClient
+    .from("course_tags")
+    .select("*")
+    .order("position", { ascending: true });
 
   const [{ data: courses, error: coursesError }, { data: tags, error: tagsError }] =
     await Promise.all([coursesQuery, tagsQuery]);
