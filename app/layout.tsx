@@ -108,7 +108,11 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
-      <Analytics />
+      <Analytics
+        eventEndpoint="https://raytonx-learn.vercel.app/_vercel/insights/event"
+        viewEndpoint="https://raytonx-learn.vercel.app/_vercel/insights/view"
+        scriptSrc="https://raytonx-learn.vercel.app/_vercel/insights/script.js"
+      />
       <SpeedInsights />
     </html>
   );
