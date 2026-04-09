@@ -91,7 +91,7 @@ export default async function LessonPage({
   return (
     <>
       <LessonSidebar course={course} initialLessons={lessons} currentLessonSlug={lessonSlug} />
-      <LessonContent lesson={lesson} />
+      <LessonContent lesson={lesson} courseSlug={courseSlug} />
     </>
   );
 }
