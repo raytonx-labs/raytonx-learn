@@ -42,6 +42,10 @@ NEXT_PUBLIC_BASE_PATH=/courses
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
+GITHUB_OWNER=
+GITHUB_REPO=
+GITHUB_TOKEN=
+GITHUB_WEBHOOK_SECRET=
 ```
 
 说明：
@@ -49,6 +53,8 @@ SUPABASE_SERVICE_ROLE_KEY=
 - `NEXT_PUBLIC_SITE_URL` 用于 canonical、Open Graph、sitemap 等绝对地址生成。
 - `NEXT_PUBLIC_BASE_PATH` 通常为 `/courses`。
 - `SUPABASE_SERVICE_ROLE_KEY` 仅服务端使用，不应暴露到客户端。
+- `GITHUB_TOKEN` 仅服务端使用，用于拉取 lesson MDX 原文。
+- `GITHUB_WEBHOOK_SECRET` 用于校验 GitHub webhook 签名。
 
 ## 内容管理
 
@@ -69,10 +75,26 @@ SUPABASE_SERVICE_ROLE_KEY=
 课程内容没有放数据库，而是放在独立仓库，用 MDX 管理。
 
 - 每个 lesson 是一个 mdx 文件
-- 通过 GitHub API 拉取内容
-- 使用 Next.js cache（revalidate + tags）控制更新
+- 服务端通过 GitHub API 拉取内容
+- 页面首屏渲染节选内容，登录后前端通过内容 API 拉取完整内容
+- 内容缓存使用 Next.js tag cache，并通过 GitHub webhook 触发 `revalidateTag`
 
 这样可以避免每次改内容都触发完整构建，同时保留 Git 版本记录。
+
+### 内容更新回源
+
+项目提供 GitHub 内容刷新 webhook：
+
+```text
+/api/webhooks/github/content-revalidate
+```
+
+说明：
+
+- 该路由接收 GitHub `push` webhook
+- 根据 payload 中变更的 mdx 文件路径，反查对应 lesson
+- 对命中的 lesson 内容 tag 执行 `revalidateTag`
+- 支持多个 GitHub webhook 时，建议继续按业务域拆路由，例如 `github/content-revalidate`
 
 ## 其他
 

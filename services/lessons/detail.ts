@@ -1,6 +1,17 @@
+import { Lesson } from "@/types/lesson";
 import { TypedSupabaseClient } from "@/types/supabase-client";
 
-import { lessonBySlugQuery, publicLessonsByCourseSlugQuery } from "./queries";
+import {
+  lessonBySlugQuery,
+  lessonsByMdxPathsQuery,
+  publicLessonsByCourseSlugQuery,
+} from "./queries";
+
+export type LessonWithCourseSlug = Lesson & {
+  courses: {
+    slug: string;
+  } | null;
+};
 
 export const getLessonBySlug = async (
   supabase: TypedSupabaseClient,
@@ -22,4 +33,19 @@ export const getFirstLessonByCourse = async (supabase: TypedSupabaseClient, cour
   if (error) throw error;
 
   return data;
+};
+
+export const listLessonsByMdxPaths = async (
+  supabase: TypedSupabaseClient,
+  mdxPaths: string[],
+): Promise<LessonWithCourseSlug[]> => {
+  if (mdxPaths.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await lessonsByMdxPathsQuery(supabase, mdxPaths);
+
+  if (error) throw error;
+
+  return (data ?? []) as LessonWithCourseSlug[];
 };

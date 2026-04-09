@@ -67,3 +67,7 @@ export const lessonBySlugQuery = (
     .eq("slug", lessonSlug)
     .eq("courses.slug", courseSlug);
 };
+
+export const lessonsByMdxPathsQuery = (supabase: TypedSupabaseClient, mdxPaths: string[]) => {
+  return supabase.from("lessons").select("*,courses!inner(slug)").in("mdx_path", mdxPaths);
+};
