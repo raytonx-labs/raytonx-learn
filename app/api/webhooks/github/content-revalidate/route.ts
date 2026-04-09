@@ -80,6 +80,7 @@ export async function POST(request: Request) {
   }
 
   try {
+    console.log("GitHub webhook received, changed paths:", changedPaths);
     const lessons = await listLessonsByMdxPaths(supabaseStaticClient, changedPaths);
     const matchedPaths = new Set<string>();
 
