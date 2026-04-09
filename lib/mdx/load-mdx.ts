@@ -1,4 +1,5 @@
 import matter from "gray-matter";
+import "server-only";
 
 import { Lesson } from "@/types/lesson";
 
@@ -10,13 +11,7 @@ export async function loadMdx(lesson: Lesson) {
         Authorization: `token ${process.env.GITHUB_TOKEN}`,
         Accept: "application/vnd.github.v3.raw", // 返回原始文本
       },
-      // 使用 tags, Next.js 缓存可精确刷新
-      next: {
-        revalidate: process.env.MDX_REVALIDATE_SECONDS
-          ? Number(process.env.MDX_REVALIDATE_SECONDS)
-          : false,
-        tags: [`lesson-${lesson.slug}`],
-      },
+      cache: "no-store",
     },
   );
 

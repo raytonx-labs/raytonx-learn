@@ -1,14 +1,55 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
 
-import { loadMdx } from "@/lib/mdx/load-mdx";
+import { getLessonContentBySlug } from "@/lib/content/get-lesson-content";
 import { Lesson } from "@/types/lesson";
 
-export async function LessonContent({ lesson }: { lesson: Lesson }) {
-  let content: string;
+import { LessonContentClient } from "./LessonContentClient";
 
+const PREVIEW_LINE_LIMIT = 20;
+
+function getPreviewContent(source: string, lineLimit = PREVIEW_LINE_LIMIT) {
+  const lines = source.split("\n");
+  const previewLines: string[] = [];
+  let codeFenceDelimiter: string | null = null;
+
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    const fenceMatch = trimmedLine.match(/^(```|~~~)/);
+
+    if (fenceMatch) {
+      const delimiter = fenceMatch[1];
+      codeFenceDelimiter = codeFenceDelimiter === delimiter ? null : delimiter;
+    }
+
+    previewLines.push(line);
+
+    if (previewLines.length >= lineLimit && !codeFenceDelimiter) {
+      break;
+    }
+  }
+
+  if (codeFenceDelimiter) {
+    previewLines.push(codeFenceDelimiter);
+  }
+
+  return previewLines.join("\n").trim();
+}
+
+export async function LessonContent({
+  lesson,
+  courseSlug,
+}: {
+  lesson: Lesson;
+  courseSlug: string;
+}) {
   try {
-    const result = await loadMdx(lesson);
-    content = result.content;
+    const result = await getLessonContentBySlug(courseSlug, lesson.slug);
+    return renderLessonContent({
+      courseSlug,
+      lessonSlug: lesson.slug,
+      lessonName: lesson.name,
+      previewContent: getPreviewContent(result.content),
+    });
   } catch (error) {
     console.log("LessonContent load error:", error);
 
@@ -21,21 +62,37 @@ export async function LessonContent({ lesson }: { lesson: Lesson }) {
       </div>
     );
   }
+}
 
+function renderLessonContent({
+  courseSlug,
+  lessonSlug,
+  lessonName,
+  previewContent,
+}: {
+  courseSlug: string;
+  lessonSlug: string;
+  lessonName: string;
+  previewContent: string;
+}) {
   return (
     <main className="flex-1 overflow-y-auto">
       <div className="max-w-3xl mx-auto px-6 md:px-10 py-10">
-        {/* Lesson Title */}
-        {/* <header className="mb-8 pb-6 border-b border-border">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">{lesson.name}</h1>
-          {lesson.description && <p className="mt-2 text-muted-foreground">{lesson.description}</p>}
-        </header> */}
-
-        {/* MDX Content */}
-        <article className="prose prose-neutral max-w-none">
-          <MDXRemote source={content} />
-        </article>
+        <LessonContentClient
+          courseSlug={courseSlug}
+          lessonSlug={lessonSlug}
+          lessonName={lessonName}
+          preview={renderPreviewContent(previewContent)}
+        />
       </div>
     </main>
+  );
+}
+
+function renderPreviewContent(previewContent: string) {
+  return (
+    <article className="prose prose-neutral max-w-none">
+      <MDXRemote source={previewContent} />
+    </article>
   );
 }

@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
         basePath: false,
         permanent: true,
       },
+      {
+        source: "/api/:path*",
+        destination: "/courses/api/:path*",
+        basePath: false,
+        permanent: false,
+      },
     ];
   },
 };
