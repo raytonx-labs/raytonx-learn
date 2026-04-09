@@ -76,7 +76,7 @@ GITHUB_WEBHOOK_SECRET=
 
 - 每个 lesson 是一个 mdx 文件
 - 服务端通过 GitHub API 拉取内容
-- 页面首屏渲染节选内容，登录后前端通过内容 API 拉取完整内容
+- 页面首屏渲染节选内容，登录后前端通过内容 API 拉取完整内容 `/courses/api/content/courses/[courseSlug]/lessons/[lessonSlug]`
 - 内容缓存使用 Next.js tag cache，并通过 GitHub webhook 触发 `revalidateTag`
 
 这样可以避免每次改内容都触发完整构建，同时保留 Git 版本记录。
@@ -86,7 +86,7 @@ GITHUB_WEBHOOK_SECRET=
 项目提供 GitHub 内容刷新 webhook：
 
 ```text
-/api/webhooks/github/content-revalidate
+/courses/api/webhooks/github/content-revalidate
 ```
 
 说明：
