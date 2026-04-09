@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -25,8 +26,16 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
-  const callbackUrl = `${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}/auth/callback`;
+  const nextPath = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+  const relativeNextPath =
+    basePath && nextPath.startsWith(basePath) ? nextPath.slice(basePath.length) || "/" : nextPath;
+  const callbackUrl = new URL(`${basePath}/auth/callback`, process.env.NEXT_PUBLIC_SITE_URL!);
+
+  callbackUrl.searchParams.set("next", relativeNextPath);
 
   const supabase = createSupabaseBrowserClient();
 
@@ -48,7 +57,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
         email,
         password,
         options: {
-          emailRedirectTo: callbackUrl,
+          emailRedirectTo: callbackUrl.toString(),
         },
       });
       if (error) {
@@ -68,7 +77,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: callbackUrl,
+        redirectTo: callbackUrl.toString(),
       },
     });
 
