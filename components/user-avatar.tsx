@@ -1,7 +1,6 @@
 "use client";
 
 import { User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,8 +18,6 @@ type UserAvatarProps = {
 };
 
 export function UserAvatar({ user, onSignOut }: UserAvatarProps) {
-  const router = useRouter();
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,7 +39,6 @@ export function UserAvatar({ user, onSignOut }: UserAvatarProps) {
         <DropdownMenuItem
           onSelect={async () => {
             await onSignOut();
-            router.replace("/");
           }}
         >
           退出登录
