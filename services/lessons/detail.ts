@@ -18,7 +18,7 @@ export const getLessonBySlug = async (
   courseSlug: string,
   lessonSlug: string,
 ) => {
-  const { data, error } = await lessonBySlugQuery(supabase, courseSlug, lessonSlug).single();
+  const { data, error } = await lessonBySlugQuery(supabase, courseSlug, lessonSlug).maybeSingle();
 
   if (error) throw error;
   return data;

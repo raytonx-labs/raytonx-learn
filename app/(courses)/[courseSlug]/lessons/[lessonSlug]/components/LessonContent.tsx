@@ -57,7 +57,7 @@ export async function LessonContent({
       <div className="flex-1 flex items-center justify-center px-8">
         <div className="text-center space-y-3">
           <h2 className="text-lg font-medium text-foreground">内容不可用</h2>
-          <p className="text-sm text-muted-foreground">该课程内容暂时不可用，请稍后重试。</p>
+          <p className="text-sm text-muted-foreground">该内容暂时不可用，请稍后重试。</p>
         </div>
       </div>
     );

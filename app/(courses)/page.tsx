@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { supabaseStaticClient } from "@/lib/supabase/static";
 import { listCourses } from "@/services/courses/list";
+
+export const metadata: Metadata = {
+  title: "解决方案总览",
+  description:
+    "浏览 Practices 的解决方案模块，快速了解我们在 Web 平台、AI 集成、认证、SEO 与交付上的落地能力。",
+};
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ tag?: string }> }) {
   const tag = (await searchParams).tag ?? "all";
@@ -19,7 +26,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
     return (
       <div className="w-full max-w-5xl mx-auto px-6 py-16">
         <p className="text-muted-foreground">
-          课程加载出错:
+          内容加载出错:
           {coursesError ? ` ${coursesError.message}` : ""}
           {tagsError ? ` ${tagsError.message}` : ""}
         </p>
@@ -31,9 +38,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
     <div className="w-full max-w-5xl mx-auto px-6 py-16">
       {/* Page Header */}
       <header className="mb-12">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground mb-3">Courses</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground mb-3">解决方案</h1>
         <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl">
-          将真实项目开发过程拆解为系统教程，涵盖架构设计、SEO、认证、部署等实战内容。
+          将技术能力产品化展示，拆成可理解的业务模块，帮助团队快速判断适用场景、交付方式与落地范围。
         </p>
       </header>
 
@@ -48,7 +55,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
             }`}
           >
-            All
+            全部
           </Link>
           {tags?.map((t) => (
             <Link
@@ -66,7 +73,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
         </div>
       </nav>
 
-      {/* Course List */}
+      {/* Solution List */}
       <div className="space-y-4">
         {courses && courses.length > 0 ? (
           courses.map((course) => {
@@ -138,7 +145,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
           })
         ) : (
           <div className="text-center py-20">
-            <p className="text-muted-foreground">No courses available.</p>
+            <p className="text-muted-foreground">暂无可展示的解决方案。</p>
           </div>
         )}
       </div>

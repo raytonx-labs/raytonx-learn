@@ -1,6 +1,6 @@
 import { TypedSupabaseClient } from "@/types/supabase-client";
 
-export function publishedCoursesQuery(supabase: TypedSupabaseClient) {
+export function publicCoursesQuery(supabase: TypedSupabaseClient) {
   return supabase
     .from("courses")
     .select(
@@ -8,4 +8,8 @@ export function publishedCoursesQuery(supabase: TypedSupabaseClient) {
     )
     .in("status", ["published", "coming_soon"])
     .is("deleted_at", null);
+}
+
+export function publishedCoursesQuery(supabase: TypedSupabaseClient) {
+  return publicCoursesQuery(supabase).eq("status", "published");
 }

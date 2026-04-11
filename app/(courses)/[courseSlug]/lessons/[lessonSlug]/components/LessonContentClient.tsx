@@ -59,8 +59,9 @@ export function LessonContentClient({
         setStatus("loading");
         setFetchError(null);
 
+        const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_PATH}/api/content/${process.env.NEXT_PUBLIC_BASE_PATH}/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`,
+          `${basePath}/api/content/courses/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`,
           {
             credentials: "include",
           },

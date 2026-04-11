@@ -17,35 +17,52 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH!;
+const canonicalUrl = `${siteUrl}${basePath}`;
+const siteDescription =
+  "RaytonX Practices 展示我们在真实项目中的技术实践，涵盖 Next.js 应用开发、AI 集成、认证系统、SEO 优化与系统架构设计，帮助你了解我们如何设计与实现复杂系统。";
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Practices",
+  url: canonicalUrl,
+  description: siteDescription,
+};
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Practices",
+  url: canonicalUrl,
+  inLanguage: "zh-CN",
+  description: siteDescription,
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    `${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}`,
-  ),
+  metadataBase: new URL(canonicalUrl),
 
   title: {
-    default: "RaytonX Learn - 远程开发技术分享",
-    template: "%s | RaytonX Learn",
+    default: "Practices - 企业解决方案展示",
+    template: "%s | Practices",
   },
 
-  description:
-    "RaytonX Learn 分享真实项目中的技术实践，涵盖 Next.js、Supabase、NestJS 等现代开发技术，帮助你构建可用于远程工作的技术体系。",
+  description: siteDescription,
 
   keywords: [
-    "TS全栈",
-    "Next.js 教程",
+    "企业解决方案",
+    "技术能力产品化",
+    "数字化方案展示",
+    "Web 平台开发",
+    "AI 集成方案",
+    "SEO 方案",
+    "认证与权限系统",
     "Supabase",
     "TypeScript",
-    "数字游民",
-    "自由职业",
-    "海外外包",
     "全栈开发",
-    "远程工作",
-    "编程在线课程",
-    "React 教程",
+    "Next.js",
     "Node.js",
-    "软件工程实践",
-    "DevOps",
-    "AI集成",
+    "解决方案架构",
+    "软件交付",
   ],
 
   authors: [{ name: "RaytonX Team" }],
@@ -65,36 +82,34 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "zh_CN",
-    siteName: "RaytonX Learn",
-    title: "RaytonX Learn - 远程开发技术分享",
-    description:
-      "实战导向的 Next.js、Supabase、TypeScript 全栈课程，帮助你快速提升远程开发能力，构建高质量生产级项目。",
+    siteName: "Practices",
+    title: "Practices - 企业解决方案展示",
+    description: siteDescription,
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "RaytonX Learn - 高质量编程技术课程",
+        alt: "Practices 企业解决方案展示封面",
       },
       {
         url: "/og-image-square.png",
         width: 1200,
         height: 1200,
-        alt: "RaytonX Learn 课程封面",
+        alt: "Practices 企业解决方案展示封面",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "RaytonX Learn - 远程开发技术分享",
-    description:
-      "实战导向的 Next.js、Supabase、TypeScript 全栈课程，帮助你快速提升远程开发能力，构建高质量生产级项目。",
+    title: "Practices - 企业解决方案展示",
+    description: siteDescription,
     images: ["/og-image.png"],
   },
 
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}`,
+    canonical: canonicalUrl,
   },
 };
 
@@ -104,14 +119,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         <AuthProvider>{children}</AuthProvider>
       </body>
       <Analytics
-        eventEndpoint={`${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}/_vercel/insights/event`}
-        viewEndpoint={`${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}/_vercel/insights/view`}
-        scriptSrc={`${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}/_vercel/insights/script.js`}
+        eventEndpoint={`${canonicalUrl}/_vercel/insights/event`}
+        viewEndpoint={`${canonicalUrl}/_vercel/insights/view`}
+        scriptSrc={`${canonicalUrl}/_vercel/insights/script.js`}
       />
       <SpeedInsights />
     </html>

@@ -114,7 +114,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
             {mode === "login" ? "欢迎回来" : "创建账号"}
           </DialogTitle>
           <DialogDescription className="text-center text-muted-foreground">
-            {mode === "login" ? "登录以访问您的课程" : "开始您的学习之旅"}
+            {mode === "login" ? "登录以查看完整方案说明" : "创建账号以查看完整方案说明"}
           </DialogDescription>
         </DialogHeader>
 

@@ -51,6 +51,11 @@ export async function getLessonContent(
   lessonSlug: string,
 ): Promise<LessonContentPayload> {
   const lesson = await getLessonBySlug(supabaseStaticClient, courseSlug, lessonSlug);
+
+  if (!lesson) {
+    throw new Error(`Lesson not found for ${courseSlug}/${lessonSlug}`);
+  }
+
   const tags = getLessonContentTags(lesson, courseSlug);
 
   const cachedLoader = unstable_cache(

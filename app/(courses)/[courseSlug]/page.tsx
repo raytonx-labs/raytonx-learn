@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { supabaseStaticClient } from "@/lib/supabase/static";
@@ -18,19 +19,37 @@ export async function generateMetadata({
   const { courseSlug } = await params;
   const course = await getCourseBySlug(supabaseStaticClient, courseSlug);
 
+  if (!course) {
+    return {
+      title: "解决方案不存在",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
   return {
-    title: course?.name,
-    description: course?.description?.slice(0, 160),
+    title: course.name,
+    description: course.description?.slice(0, 160),
     alternates: { canonical: `/${courseSlug}` },
     openGraph: {
+      title: course.name,
+      description: course.description?.slice(0, 160),
       images: [
         {
           url: `/${courseSlug}/opengraph-image`,
           width: 1200,
           height: 630,
-          alt: course?.name,
+          alt: course.name,
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: course.name,
+      description: course.description?.slice(0, 160),
+      images: [`/${courseSlug}/opengraph-image`],
     },
   };
 }
@@ -41,7 +60,10 @@ type Params = {
 
 export async function generateStaticParams(): Promise<Params[]> {
   try {
-    const courses = await listCourses(supabaseStaticClient, { pageSize: 1000 });
+    const courses = await listCourses(supabaseStaticClient, {
+      pageSize: 1000,
+      publishedOnly: true,
+    });
 
     if (courses.error) throw new Error("Failed to fetch courses");
 
@@ -64,13 +86,13 @@ export default async function CoursePage({ params }: { params: Promise<{ courseS
   const { courseSlug } = await params;
 
   if (!courseSlug) {
-    throw new Error("Course slug is required");
+    notFound();
   }
 
   const course = await getCourseBySlug(supabaseStaticClient, courseSlug);
 
   if (!course) {
-    throw new Error("Course not found");
+    notFound();
   }
 
   const firstLesson = await getFirstLessonByCourse(supabaseStaticClient, courseSlug);
@@ -79,16 +101,58 @@ export default async function CoursePage({ params }: { params: Promise<{ courseS
   });
 
   const tags = course.course_tag_relations?.map((rel) => rel.course_tags.name) ?? [];
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH!;
+  const canonicalUrl = `${siteUrl}${basePath}/${course.slug}`;
+  const solutionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: course.name,
+    description: course.description,
+    serviceType: "企业解决方案",
+    provider: {
+      "@type": "Organization",
+      name: "Practices",
+    },
+    url: canonicalUrl,
+    keywords: tags,
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "解决方案",
+        item: `${siteUrl}${basePath}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: course.name,
+        item: canonicalUrl,
+      },
+    ],
+  };
 
   return (
     <div className="w-full max-w-5xl mx-auto px-6 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(solutionJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Breadcrumb */}
       <nav className="mb-8">
         <Link
           href="/"
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
-          Courses
+          解决方案
         </Link>
         <span className="mx-2 text-muted-foreground">/</span>
         <span className="text-sm text-foreground">{course.name}</span>
@@ -121,15 +185,15 @@ export default async function CoursePage({ params }: { params: Promise<{ courseS
             )}
           </header>
 
-          {/* Start Learning CTA */}
+          {/* CTA */}
           <div className="mb-12">
             {firstLesson ? (
               <Button asChild size="lg" className="font-medium">
-                <Link href={`/${courseSlug}/lessons/${firstLesson.slug}`}>开始学习</Link>
+                <Link href={`/${courseSlug}/lessons/${firstLesson.slug}`}>查看方案详情</Link>
               </Button>
             ) : (
               <Button disabled size="lg">
-                敬请期待
+                模块整理中
               </Button>
             )}
           </div>
@@ -137,7 +201,7 @@ export default async function CoursePage({ params }: { params: Promise<{ courseS
           {/* Resources */}
           {course.source_url && (
             <section className="mb-12">
-              <h2 className="text-lg font-medium text-foreground mb-3">资源</h2>
+              <h2 className="text-lg font-medium text-foreground mb-3">相关资源</h2>
               <Link
                 href={course.source_url}
                 target="_blank"
@@ -157,11 +221,11 @@ export default async function CoursePage({ params }: { params: Promise<{ courseS
           )}
         </div>
 
-        {/* Sidebar - Lesson List */}
+        {/* Sidebar - Module List */}
         <aside className="lg:sticky lg:top-20 lg:self-start">
           <div className="border border-border rounded-lg p-4">
             <h2 className="text-sm font-medium text-foreground mb-4">
-              Lessons ({lessons?.length || 0})
+              能力模块 ({lessons?.length || 0})
             </h2>
             {lessons && lessons.length > 0 ? (
               <nav className="space-y-1">
@@ -200,7 +264,7 @@ export default async function CoursePage({ params }: { params: Promise<{ courseS
                 })}
               </nav>
             ) : (
-              <p className="text-sm text-muted-foreground">暂无课时内容</p>
+              <p className="text-sm text-muted-foreground">暂无可展示的模块内容。</p>
             )}
           </div>
         </aside>

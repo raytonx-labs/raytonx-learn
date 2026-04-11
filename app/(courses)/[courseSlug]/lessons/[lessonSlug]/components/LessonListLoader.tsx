@@ -52,7 +52,7 @@ export function LessonListLoader({
             {isLoadingMore ? "加载中..." : "加载更多"}
           </Button>
         ) : lessons.length > 5 ? (
-          <span className="text-xs text-muted-foreground">所有课程加载完成</span>
+          <span className="text-xs text-muted-foreground">所有内容加载完成</span>
         ) : null}
       </div>
     </div>

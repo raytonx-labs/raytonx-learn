@@ -20,19 +20,37 @@ export async function generateMetadata({
   const { courseSlug, lessonSlug } = await params;
   const lesson = await getLessonBySlug(supabaseStaticClient, courseSlug, lessonSlug);
 
+  if (!lesson) {
+    return {
+      title: "内容不存在",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
   return {
-    title: lesson?.name,
-    description: lesson?.description?.slice(0, 160),
+    title: lesson.name,
+    description: lesson.description?.slice(0, 160),
     alternates: { canonical: `/${courseSlug}/lessons/${lessonSlug}` },
     openGraph: {
+      title: lesson.name,
+      description: lesson.description?.slice(0, 160),
       images: [
         {
           url: `/${courseSlug}/opengraph-image`,
           width: 1200,
           height: 630,
-          alt: lesson?.name,
+          alt: lesson.name,
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: lesson.name,
+      description: lesson.description?.slice(0, 160),
+      images: [`/${courseSlug}/opengraph-image`],
     },
   };
 }
@@ -86,7 +104,7 @@ export default async function LessonPage({
 
   const lessons = lessonsResult.data;
 
-  if (!lesson) notFound();
+  if (!course || !lesson) notFound();
 
   return (
     <>

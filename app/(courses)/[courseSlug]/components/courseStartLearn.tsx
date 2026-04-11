@@ -12,14 +12,14 @@ export function StartLearningButton({
   if (!firstLessonSlug) {
     return (
       <Button disabled className="w-full">
-        课程内容即将上线
+        内容即将上线
       </Button>
     );
   }
 
   return (
     <Button asChild size="lg" className="w-full">
-      <Link href={`/${courseSlug}/lessons/${firstLessonSlug}`}>开始学习</Link>
+      <Link href={`/${courseSlug}/lessons/${firstLessonSlug}`}>了解详情</Link>
     </Button>
   );
 }

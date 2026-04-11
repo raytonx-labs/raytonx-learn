@@ -16,9 +16,7 @@ export const Navbar = () => {
       <div className="w-full max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-base font-semibold text-foreground tracking-tight">
-            RaytonX Learn
-          </span>
+          <span className="text-base font-semibold text-foreground tracking-tight">Practices</span>
         </Link>
 
         {/* Navigation Links */}
@@ -27,7 +25,7 @@ export const Navbar = () => {
             href={`${publicSite}/zh`}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            RaytonX
+            Home
           </Link>
           <Link
             href={`${publicSite}/en/blog`}

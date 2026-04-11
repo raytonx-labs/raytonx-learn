@@ -1,6 +1,6 @@
-# RaytonX Learn
+# RaytonX Practices
 
-RaytonX Learn 是一个基于 Next.js 构建的内容站点，挂载在 `/solutions` 路径下，后端服务使用 Supabase。
+RaytonX Practices 是一个基于 Next.js 构建的内容站点，挂载在 `/solutions` 路径下，后端服务使用 Supabase。
 
 线上地址：https://www.raytonx.com/solutions
 
@@ -60,7 +60,7 @@ GITHUB_WEBHOOK_SECRET=
 
 ### 结构化数据
 
-课程和课时存放在 supabase 中，当前区分为不同状态：
+数据存放在 supabase 中，当前区分为不同状态：
 
 - `published`：正式发布，可用于 SEO、sitemap、静态页面生成。
 - `coming_soon`：可在列表中展示“敬请期待”，但不应生成静态课时页面，也不应出现在 sitemap 中。
@@ -70,9 +70,9 @@ GITHUB_WEBHOOK_SECRET=
 - `published` 查询只返回已发布内容。
 - `public` 查询用于站内展示，可包含 `coming_soon`。
 
-### 课程内容
+### 具体内容
 
-课程内容没有放数据库，而是放在独立仓库，用 MDX 管理。
+内容没有放数据库，而是放在独立仓库，用 MDX 管理。
 
 - 每个 lesson 是一个 mdx 文件
 - 服务端通过 GitHub API 拉取内容

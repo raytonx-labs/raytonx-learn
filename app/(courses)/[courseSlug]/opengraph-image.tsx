@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 import { supabaseStaticClient } from "@/lib/supabase/static";
 import { getCourseBySlug } from "@/services/courses/detail";
 
-export const alt = "RaytonX Learn";
+export const alt = "Practices";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -11,13 +11,13 @@ export default async function Image({ params }: { params: Promise<{ courseSlug: 
   const { courseSlug } = await params;
   const course = await getCourseBySlug(supabaseStaticClient, courseSlug);
 
-  const title = course?.name || "RaytonX Learn";
+  const title = course?.name || "Practices";
   const displayTitle = title.length > 50 ? title.slice(0, 47) + "..." : title;
   const description = course?.description
     ? course.description.length > 120
       ? course.description.slice(0, 117) + "..."
       : course.description
-    : "Learn modern software development";
+    : "面向企业场景的技术解决方案与能力模块展示";
 
   return new ImageResponse(
     <div
@@ -61,7 +61,7 @@ export default async function Image({ params }: { params: Promise<{ courseSlug: 
             letterSpacing: "-0.02em",
           }}
         >
-          RaytonX Learn
+          Practices
         </div>
       </div>
 
@@ -121,7 +121,7 @@ export default async function Image({ params }: { params: Promise<{ courseSlug: 
             fontWeight: 500,
           }}
         >
-          <span>Start Learning</span>
+          <span>Explore Solution</span>
           <span style={{ display: "flex" }}>→</span>
         </div>
         <div
