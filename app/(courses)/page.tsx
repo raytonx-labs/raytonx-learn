@@ -40,7 +40,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
       <header className="mb-12">
         <h1 className="text-3xl font-semibold tracking-tight text-foreground mb-3">解决方案</h1>
         <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl">
-          将技术能力产品化展示，拆成可理解的业务模块，帮助团队快速判断适用场景、交付方式与落地范围。
+          将复杂技术能力拆解为清晰的解决方案模块，帮助你快速理解适用场景、实现方式与落地路径。
         </p>
       </header>
 
