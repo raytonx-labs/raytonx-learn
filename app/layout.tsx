@@ -109,9 +109,9 @@ export default function RootLayout({
         <AuthProvider>{children}</AuthProvider>
       </body>
       <Analytics
-        eventEndpoint="https://www.raytonx.com/courses/_vercel/insights/event"
-        viewEndpoint="https://www.raytonx.com/courses/_vercel/insights/view"
-        scriptSrc="https://www.raytonx.com/courses/_vercel/insights/script.js"
+        eventEndpoint={`${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}/_vercel/insights/event`}
+        viewEndpoint={`${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}/_vercel/insights/view`}
+        scriptSrc={`${process.env.NEXT_PUBLIC_SITE_URL!}${process.env.NEXT_PUBLIC_BASE_PATH!}/_vercel/insights/script.js`}
       />
       <SpeedInsights />
     </html>

@@ -92,7 +92,7 @@ export async function POST(request: Request) {
 
       matchedPaths.add(lesson.mdx_path);
       revalidateTag(getLessonContentTagByMdxPath(lesson.mdx_path), REVALIDATE_TAG_PROFILE);
-      revalidatePath(`/courses/${courseSlug}/lessons/${lesson.slug}`);
+      revalidatePath(`${process.env.NEXT_PUBLIC_BASE_PATH}/${courseSlug}/lessons/${lesson.slug}`);
     }
 
     return NextResponse.json({

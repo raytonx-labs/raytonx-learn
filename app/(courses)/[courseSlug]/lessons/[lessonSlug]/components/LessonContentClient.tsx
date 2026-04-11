@@ -60,7 +60,7 @@ export function LessonContentClient({
         setFetchError(null);
 
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_PATH}/api/content/courses/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`,
+          `${process.env.NEXT_PUBLIC_BASE_PATH}/api/content/${process.env.NEXT_PUBLIC_BASE_PATH}/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`,
           {
             credentials: "include",
           },

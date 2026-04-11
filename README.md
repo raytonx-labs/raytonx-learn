@@ -1,8 +1,8 @@
 # RaytonX Learn
 
-RaytonX Learn 是一个基于 Next.js 构建的课程站点，挂载在 `/courses` 路径下，后端服务使用 Supabase。
+RaytonX Learn 是一个基于 Next.js 构建的内容站点，挂载在 `/solutions` 路径下，后端服务使用 Supabase。
 
-线上地址：https://www.raytonx.com/courses
+线上地址：https://www.raytonx.com/solutions
 
 ## Tech Stack
 
@@ -23,14 +23,14 @@ pnpm dev
 默认开发地址：
 
 ```text
-http://localhost:3000/courses
+http://localhost:3000/solutions
 ```
 
 项目在 `next.config.ts` 中配置了：
 
-- `basePath: "/courses"`
-- `assetPrefix: "/courses"`
-- 根路径 `/` 永久重定向到 `/courses`
+- `basePath: "/solutions"`
+- `assetPrefix: "/solutions"`
+- 根路径 `/` 永久重定向到 `/solutions`
 
 ## Environment Variables
 
@@ -38,7 +38,7 @@ http://localhost:3000/courses
 
 ```bash
 NEXT_PUBLIC_SITE_URL=
-NEXT_PUBLIC_BASE_PATH=/courses
+NEXT_PUBLIC_BASE_PATH=/solutions
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
@@ -51,7 +51,7 @@ GITHUB_WEBHOOK_SECRET=
 说明：
 
 - `NEXT_PUBLIC_SITE_URL` 用于 canonical、Open Graph、sitemap 等绝对地址生成。
-- `NEXT_PUBLIC_BASE_PATH` 通常为 `/courses`。
+- `NEXT_PUBLIC_BASE_PATH` 通常为 `/solutions`。
 - `SUPABASE_SERVICE_ROLE_KEY` 仅服务端使用，不应暴露到客户端。
 - `GITHUB_TOKEN` 仅服务端使用，用于拉取 lesson MDX 原文。
 - `GITHUB_WEBHOOK_SECRET` 用于校验 GitHub webhook 签名。
@@ -76,7 +76,7 @@ GITHUB_WEBHOOK_SECRET=
 
 - 每个 lesson 是一个 mdx 文件
 - 服务端通过 GitHub API 拉取内容
-- 页面首屏渲染节选内容，登录后前端通过内容 API 拉取完整内容 `/courses/api/content/courses/[courseSlug]/lessons/[lessonSlug]`
+- 页面首屏渲染节选内容，登录后前端通过内容 API 拉取完整内容 `/solutions/api/content/courses/[courseSlug]/lessons/[lessonSlug]`
 - 内容缓存使用 Next.js tag cache，并通过 GitHub webhook 触发 `revalidateTag`
 
 这样可以避免每次改内容都触发完整构建，同时保留 Git 版本记录。
@@ -86,7 +86,7 @@ GITHUB_WEBHOOK_SECRET=
 项目提供 GitHub 内容刷新 webhook：
 
 ```text
-/courses/api/webhooks/github/content-revalidate
+/solutions/api/webhooks/github/content-revalidate
 ```
 
 说明：
@@ -100,7 +100,7 @@ GITHUB_WEBHOOK_SECRET=
 
 ### Analytics
 
-由于项目挂在在主域名下的`/courses` 路径， 因此 Vercel Analytics / Speed Insights 的 endpoint 指向主域名 `https://www.raytonx.com` 下的 `/courses` 路径，以避免跨域问题。
+由于项目挂在在主域名下的`/solutions` 路径， 因此 Vercel Analytics / Speed Insights 的 endpoint 指向主域名 `https://www.raytonx.com` 下的 `/solutions` 路径，以避免跨域问题。
 
 如果后续调整域名或部署路径，请同步检查：
 

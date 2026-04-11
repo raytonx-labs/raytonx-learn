@@ -131,7 +131,7 @@ export default async function Image({ params }: { params: Promise<{ courseSlug: 
             color: "#9ca3af",
           }}
         >
-          www.raytonx.com/courses
+          {`${process.env.NEXT_PUBLIC_SITE_URL ?? ""}${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}`}
         </div>
       </div>
     </div>,

@@ -2,13 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  basePath: "/courses",
-  assetPrefix: "/courses",
+  basePath: "/solutions",
+  assetPrefix: "/solutions",
   async redirects() {
     return [
       {
         source: "/",
-        destination: "/courses",
+        destination: "/solutions",
         basePath: false,
         permanent: true,
       },
