@@ -37,20 +37,11 @@ export async function generateMetadata({
     openGraph: {
       title: lesson.name,
       description: lesson.description?.slice(0, 160),
-      images: [
-        {
-          url: `/${courseSlug}/opengraph-image`,
-          width: 1200,
-          height: 630,
-          alt: lesson.name,
-        },
-      ],
     },
     twitter: {
       card: "summary_large_image",
       title: lesson.name,
       description: lesson.description?.slice(0, 160),
-      images: [`/${courseSlug}/opengraph-image`],
     },
   };
 }
