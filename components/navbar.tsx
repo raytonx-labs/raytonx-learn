@@ -16,7 +16,7 @@ export const Navbar = () => {
       <div className="w-full max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-base font-semibold text-foreground tracking-tight">Practices</span>
+          <span className="text-base font-semibold text-foreground tracking-tight">RaytonX</span>
         </Link>
 
         {/* Navigation Links */}

@@ -7,7 +7,7 @@ import { listCourses } from "@/services/courses/list";
 export const metadata: Metadata = {
   title: "解决方案总览",
   description:
-    "浏览 Practices 的解决方案模块，快速了解我们在 Web 平台、AI 集成、认证、SEO 与交付上的落地能力。",
+    "浏览 RaytonX Practices 的解决方案模块，快速了解我们在 Web 平台、AI 集成、认证、SEO 与交付上的落地能力。",
 };
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ tag?: string }> }) {

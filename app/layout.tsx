@@ -25,14 +25,14 @@ const siteDescription =
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Practices",
+  name: "RaytonX Practices",
   url: canonicalUrl,
   description: siteDescription,
 };
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Practices",
+  name: "RaytonX Practices",
   url: canonicalUrl,
   inLanguage: "zh-CN",
   description: siteDescription,
@@ -42,8 +42,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(canonicalUrl),
 
   title: {
-    default: "Practices - 企业解决方案展示",
-    template: "%s | Practices",
+    default: "RaytonX Practices - 企业解决方案展示",
+    template: "%s | RaytonX Practices",
   },
 
   description: siteDescription,
@@ -82,28 +82,28 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "zh_CN",
-    siteName: "Practices",
-    title: "Practices - 企业解决方案展示",
+    siteName: "RaytonX Practices",
+    title: "RaytonX Practices - 企业解决方案展示",
     description: siteDescription,
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Practices 企业解决方案展示封面",
+        alt: "RaytonX Practices 企业解决方案展示封面",
       },
       {
         url: "/og-image-square.png",
         width: 1200,
         height: 1200,
-        alt: "Practices 企业解决方案展示封面",
+        alt: "RaytonX Practices 企业解决方案展示封面",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Practices - 企业解决方案展示",
+    title: "RaytonX Practices - 企业解决方案展示",
     description: siteDescription,
     images: ["/og-image.png"],
   },
